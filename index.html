@@ -1,0 +1,317 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{# ═══════════════════════════════════════════════════════════════════════
+   EDIT ME — HOMEPAGE COPY
+   Everything you are likely to change on this page lives in this one block.
+   ═══════════════════════════════════════════════════════════════════════ #}
+{% set HERO_BADGE   = "Trusted by 2,000+ server owners" %}
+{% set HERO_LINE_1  = "Premium FiveM" %}
+{% set HERO_LINE_2  = "Scripts" %}
+{% set HERO_TEXT    = "Optimised, well-documented resources built for real servers. Instant delivery, lifetime updates and support that actually answers." %}
+{% set HERO_CTA_URL = "#featured" %}
+{% set DISCORD_URL  = "#" %}
+
+{# ── Images ───────────────────────────────────────────────────────────────
+   Every image URL below may be left as "" — the theme then draws its own
+   artwork instead, so nothing ever looks broken. Upload your screenshots
+   under Appearance → Assets and paste the URL, or use any direct link.
+   -------------------------------------------------------------------- #}
+{% set HERO_IMAGE     = "/graphics/Car%20product%20(with%20bg).png" %}
+{% set HERO_CAPTION   = "See it running in-game" %}
+{% set HERO_CHIP_1    = "0.02ms idle" %}
+{% set HERO_CHIP_2    = "4.9/5 from 800+ buyers" %}
+
+{# One art URL per category, in the order they appear in your dashboard.
+   Short lists are fine — missing entries fall back to the drawn artwork. #}
+{% set CATEGORY_ART = [
+  "/graphics/Hero%20(no%20bg).png",
+  "/graphics/2%20characters%20(no%20bg).png",
+  "/graphics/one%20man%20(vertical%20image).png",
+  "", "", ""
+] %}
+
+{# The screenshot gallery. Set SHOWCASE = [] to remove the section. #}
+{% set SHOWCASE = [
+  { "img": "/graphics/Car%20product%20(with%20bg).png",       "cap": "Clean, configurable UI" },
+  { "img": "/graphics/one%20man%20(horizontal%20image).png",  "cap": "Built-in admin tools" },
+  { "img": "/graphics/2%20characters%20(no%20bg).png",        "cap": "Works with ESX and QBCore" },
+  { "img": "/graphics/Hero%20(no%20bg).png",                  "cap": "Every string is translatable" }
+] %}
+
+{% set STATS = [
+  { "num": "2,000+", "label": "Servers running" },
+  { "num": "50+",    "label": "Resources" },
+  { "num": "0.02ms", "label": "Idle usage" },
+  { "num": "24/7",   "label": "Support" }
+] %}
+
+{% set FEATURES = [
+  { "icon": "fa-solid fa-bolt",          "title": "Built for performance", "text": "Every resource is profiled before release. No stutter, no wasted ticks, no bloat on your server." },
+  { "icon": "fa-solid fa-shield-halved", "title": "Lifetime updates",      "text": "Buy once and keep receiving fixes and new features. Updates land in your keymaster automatically." },
+  { "icon": "fa-solid fa-headset",       "title": "Real human support",    "text": "Open a ticket in our Discord and talk to the people who actually wrote the code." }
+] %}
+
+{% set CTA_TITLE = "Join the community" %}
+{% set CTA_TEXT  = "Get release notes, early previews and direct support from the developers." %}
+
+{# Scrolling rail under the hero. Any Font Awesome icon, or leave "icon" empty. #}
+{% set MARQUEE = [
+  { "icon": "fa-solid fa-cube",          "label": "ESX" },
+  { "icon": "fa-solid fa-cube",          "label": "QBCore" },
+  { "icon": "fa-solid fa-cube",          "label": "QBox" },
+  { "icon": "fa-solid fa-bolt",          "label": "ox_lib ready" },
+  { "icon": "fa-solid fa-code",          "label": "Open source config" },
+  { "icon": "fa-solid fa-gauge-high",    "label": "0.02ms idle" },
+  { "icon": "fa-solid fa-rotate",        "label": "Lifetime updates" },
+  { "icon": "fa-solid fa-shield-halved", "label": "Escrow protected" },
+  { "icon": "fa-solid fa-headset",       "label": "24/7 support" }
+] %}
+
+
+<section class="hero">
+  <div class="hero__fx" aria-hidden="true">
+    <span class="hero__mesh"></span>
+    <span class="hero__spot"></span>
+    <span class="hero__glow"></span>
+    <span class="float float--a"></span>
+    <span class="float float--b"></span>
+    <span class="float float--c"></span>
+    <span class="float float--d"></span>
+    <span class="float float--e"></span>
+    <span class="hero__grain"></span>
+  </div>
+
+  <div class="shell hero__grid">
+
+    <div class="hero__inner">
+      <span class="hero__badge" data-anim="scale-in">
+        <i class="fa-solid fa-star"></i> {{ HERO_BADGE }}
+      </span>
+
+      <h1 class="hero__title">
+        <span class="g-w" data-anim="clip-up" data-anim-delay="1">{{ HERO_LINE_1 }}</span><br>
+        <span class="g-a" data-anim="clip-up" data-anim-delay="2">{{ HERO_LINE_2 }}</span>
+      </h1>
+
+      <p class="hero__sub" data-anim="blur-in" data-anim-delay="3">{{ HERO_TEXT }}</p>
+
+      <div class="hero__cta" data-anim="fade-up" data-anim-delay="4">
+        <a class="btn btn--accent btn--lg" href="{{ HERO_CTA_URL }}" data-magnetic>
+          {{ __("Browse the store") }} <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a class="btn btn--ghost btn--lg" href="{{ DISCORD_URL }}" data-magnetic>
+          <i class="fa-brands fa-discord"></i> {{ __("Join Discord") }}
+        </a>
+      </div>
+    </div>
+
+    {# Product shot. With HERO_IMAGE empty this is CSS-drawn artwork. #}
+    <div class="hero__art" data-anim="slide-left" data-anim-delay="2">
+      <div class="shot {% if HERO_IMAGE == "" %}shot--art{% endif %}" data-tilt>
+        {% if HERO_IMAGE %}
+          <img src="{{ HERO_IMAGE }}" alt="{{ store.name }}" data-lightbox>
+        {% endif %}
+        {% if HERO_CAPTION %}
+          <span class="shot__cap"><i class="fa-solid fa-circle-play"></i> {{ HERO_CAPTION }}</span>
+        {% endif %}
+      </div>
+
+      {% if HERO_CHIP_1 %}
+        <span class="hero__chip hero__chip--a"><i class="fa-solid fa-bolt"></i> {{ HERO_CHIP_1 }}</span>
+      {% endif %}
+      {% if HERO_CHIP_2 %}
+        <span class="hero__chip hero__chip--b"><i class="fa-solid fa-star"></i> {{ HERO_CHIP_2 }}</span>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+
+<div class="shell" data-anim="fade-in" data-anim-delay="5">
+  <div class="rail" data-rail data-rail-speed="55">
+    <div class="rail__track">
+      {% for m in MARQUEE %}
+        <span class="rail__item">
+          {% if m.icon %}<i class="{{ m.icon }}"></i>{% endif %}{{ m.label }}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<section class="sec sec--tight">
+  <div class="shell">
+    <div class="stats" data-anim-stagger="fade-up">
+      {% for s in STATS %}
+        <div class="stat {% if loop.index == 2 %}stat--accent{% endif %}">
+          <div class="stat__num" data-countup>{{ s.num }}</div>
+          <div class="stat__label">{{ s.label }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% if store.categories|length > 0 %}
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-folder-open"></i> {{ __("Browse") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Shop by") }}</span> <span class="g-a">{{ __("category") }}</span></h2>
+    </div>
+
+    <div class="cats" data-anim-stagger="fade-up">
+      {% for c in store.categories %}
+        {% set art = CATEGORY_ART[loop.index0] is defined ? CATEGORY_ART[loop.index0] : "" %}
+        <a class="cat" href="/category/{{ c.id }}" data-parallax="16">
+          <span class="cat__img {% if art == "" %}cat__img--art{% endif %}"
+                {% if art %}style="background-image:url('{{ art }}')"{% endif %}></span>
+          <span class="cat__body">
+            <span>
+              <span class="cat__name">{{ c.name }}</span>
+              <span class="cat__meta">{{ __("View resources") }}</span>
+            </span>
+            <span class="cat__go"><i class="fa-solid fa-arrow-right"></i></span>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+<section class="sec" id="featured">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-fire"></i> {{ __("Handpicked") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Featured") }}</span> <span class="g-a">{{ __("Resources") }}</span></h2>
+      <p class="sec__sub">{{ __("The scripts our customers install first.") }}</p>
+    </div>
+
+    {# Tebex's featured cards land here — data-anim-stagger animates whatever
+       arrives, so the count does not matter. #}
+    <div id="featured-slot" data-anim-stagger="scale-in"></div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-check"></i> {{ __("Why us") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Why choose") }}</span> <span class="g-a">{{ store.name }}</span></h2>
+    </div>
+
+    <div class="grid grid--3" data-anim-stagger="fade-up">
+      {% for f in FEATURES %}
+        <article class="feat">
+          <div class="feat__icon"><i class="{{ f.icon }}"></i></div>
+          <h3 class="feat__title">{{ f.title }}</h3>
+          <p class="feat__text">{{ f.text }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% if SHOWCASE|length > 0 %}
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-images"></i> {{ __("Screenshots") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("See it") }}</span> <span class="g-a">{{ __("in action") }}</span></h2>
+      <p class="sec__sub">{{ __("Click any shot to open it full size.") }}</p>
+    </div>
+
+    <div class="gal" data-anim="fade-up" data-anim-delay="1">
+      <div class="gal__track">
+        {% for s in SHOWCASE %}
+          <figure class="shot gal__item {% if s.img == "" %}shot--art{% endif %}" data-parallax="20">
+            {% if s.img %}
+              <img src="{{ s.img }}" alt="{{ s.cap }}" loading="lazy">
+            {% endif %}
+            {% if s.cap %}
+              <figcaption class="shot__cap"><i class="fa-solid fa-expand"></i> {{ s.cap }}</figcaption>
+            {% endif %}
+          </figure>
+        {% endfor %}
+      </div>
+
+      <div class="gal__nav">
+        <button type="button" class="gal__btn gal__btn--prev" aria-label="{{ __("Previous") }}">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" class="gal__btn gal__btn--next" aria-label="{{ __("Next") }}">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+<section class="sec sec--tight">
+  <div class="shell">
+    <div id="payments-slot" data-anim="fade-up"></div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-quote-left"></i> {{ __("Testimonials") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("What people") }}</span> <span class="g-a">{{ __("say") }}</span></h2>
+    </div>
+
+    <div data-anim="fade-up" data-anim-delay="1">
+      {% include "reviews.twig" %}
+    </div>
+  </div>
+</section>
+
+
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-circle-question"></i> {{ __("Help") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Frequently asked") }}</span> <span class="g-a">{{ __("questions") }}</span></h2>
+    </div>
+
+    <div data-anim="fade-up" data-anim-delay="1">
+      {% include "faq.twig" %}
+    </div>
+  </div>
+</section>
+
+
+<section class="sec sec--tight">
+  <div class="shell">
+    <div class="band" data-anim="scale-in">
+      <div>
+        <h2 class="band__title"><span class="g-w">{{ CTA_TITLE }}</span></h2>
+        <p class="band__text">{{ CTA_TEXT }}</p>
+      </div>
+      <div class="band__cta">
+        <a class="btn btn--accent btn--lg" href="{{ DISCORD_URL }}" data-magnetic>
+          <i class="fa-brands fa-discord"></i> {{ __("Join Discord") }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{# Tebex prints every enabled module here; layout.twig's JS moves each one
+   into its slot above. Do not remove. #}
+<div id="modules-stage" hidden>{{ modules|raw }}</div>
+
+{% endblock %}

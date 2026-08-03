@@ -1,0 +1,25 @@
+{% if checkout.enableGifting %}
+  {% if package.ign == "" %}
+    <div class="giftbox">
+      <label class="field" style="flex-direction:row;align-items:center;gap:9px;cursor:pointer">
+        <input type="checkbox" id="gifting_{{ package.id }}" name="gifting[{{ package.id }}]" value="1"
+               style="width:auto" data-gift-toggle="ign_gifting_{{ package.id }}">
+        <span style="font-size:13px"><i class="fa-solid fa-gift"></i> {{ __("This is a gift") }}</span>
+      </label>
+
+      <div id="ign_gifting_{{ package.id }}" hidden style="margin-top:10px">
+        <input type="text" class="input" name="gift_user[{{ package.id }}]"
+               placeholder="{{ __("Username to gift this package to") }}">
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      var cb = document.getElementById('gifting_{{ package.id }}');
+      var box = document.getElementById('ign_gifting_{{ package.id }}');
+      if (!cb || !box) return;
+      cb.addEventListener('change', function () { box.hidden = !cb.checked; });
+    })();
+    </script>
+  {% endif %}
+{% endif %}

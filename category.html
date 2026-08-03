@@ -1,0 +1,259 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{# ═══════════════════════════════════════════════════════════════════════
+   EDIT ME — PACKAGES / CATEGORY PAGE
+   ═══════════════════════════════════════════════════════════════════════ #}
+
+{# Note: this page always renders product cards. The dashboard's per-category
+   "list" display type is deliberately ignored — the card grid is the design. #}
+
+{# The pill row above the search bar: category links + framework filters. #}
+{% set SHOW_CATEGORY_PILLS  = true %}
+{% set SHOW_FRAMEWORK_PILLS = true %}
+
+{# Short blurb under each card title, taken from the package description. #}
+{% set SHOW_DESC   = true %}
+{% set DESC_LENGTH = 115 %}
+
+{# Compatibility chips. A chip shows when its "match" text appears anywhere
+   in the package name or description (case-insensitive). #}
+{% set FRAMEWORKS = [
+  { "label": "ESX",        "match": "esx",        "icon": "fa-solid fa-cube" },
+  { "label": "QBCore",     "match": "qbcore",     "icon": "fa-solid fa-cubes" },
+  { "label": "QBox",       "match": "qbox",       "icon": "fa-solid fa-box-open" },
+  { "label": "Standalone", "match": "standalone", "icon": "fa-solid fa-bolt" }
+] %}
+
+{# Chips shown on packages whose description mentions none of the above.
+   Set to [] to simply show no chips on those. #}
+{% set FRAMEWORKS_DEFAULT = ["ESX", "QBCore", "QBox"] %}
+
+{# Card buttons. Set to false to always send buyers to the product page. #}
+{% set QUICK_ADD = true %}
+
+
+<section class="pagehead">
+  <div class="shell pagehead__inner">
+
+    <nav class="crumbs">
+      <a href="/">{{ __("Home") }}</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+      <span>{{ category.name }}</span>
+    </nav>
+
+    <div class="pagehead__row">
+      <span class="pagehead__mark" aria-hidden="true"></span>
+      <div>
+        <h1 class="pagehead__title"><span class="g-w">{{ category.name }}</span></h1>
+        <p class="pagehead__sub">
+          <span class="g-a">{{ category.packages|length }}</span>
+          {% if category.packages|length == 1 %}{{ __("resource") }}{% else %}{{ __("resources") }}{% endif %}
+          {{ __("available") }} — {{ __("built for performance, backed by real support.") }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="shell" style="padding-top:32px">
+
+  {% if category.packages|length > 0 %}
+
+    <div id="catalog">
+
+      {% if SHOW_CATEGORY_PILLS or SHOW_FRAMEWORK_PILLS %}
+        <div class="fpills" data-anim-stagger="fade-up">
+
+          {% if SHOW_CATEGORY_PILLS %}
+            {% for c in store.categories %}
+              <a class="fpill {% if c.active %}is-on{% endif %}" href="/category/{{ c.id }}">{{ c.name }}</a>
+              {% for sub in c.subcategories %}
+                <a class="fpill {% if sub.active %}is-on{% endif %}" href="/category/{{ sub.id }}">{{ sub.name }}</a>
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+
+          {% if SHOW_FRAMEWORK_PILLS %}
+            {% if SHOW_CATEGORY_PILLS %}<span class="fpills__sep" aria-hidden="true"></span>{% endif %}
+            <button type="button" class="fpill fpill--tag is-on js-filter" data-filter="">{{ __("All") }}</button>
+            <button type="button" class="fpill fpill--tag js-filter" data-filter="free">{{ __("Free") }}</button>
+            {% for f in FRAMEWORKS %}
+              <button type="button" class="fpill fpill--tag js-filter" data-filter="{{ f.match }}">{{ f.label }}</button>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+      <div class="toolbar">
+        <label class="searchbox toolbar__search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" class="input" id="catalog-search"
+                 placeholder="{{ __("Search for a product by name…") }}" autocomplete="off">
+        </label>
+
+        <select class="select toolbar__sort" id="catalog-sort" aria-label="{{ __("Sort") }}">
+          <option value="default">{{ __("Sort: Default") }}</option>
+          <option value="price-asc">{{ __("Price: Low to high") }}</option>
+          <option value="price-desc">{{ __("Price: High to low") }}</option>
+          <option value="name-asc">{{ __("Name: A–Z") }}</option>
+          <option value="name-desc">{{ __("Name: Z–A") }}</option>
+        </select>
+
+        <span class="toolbar__count" id="catalog-count"></span>
+      </div>
+
+      <div class="grid grid--3 js-catalog-grid" data-anim-stagger="scale-in">
+
+        {% for package in category.packages %}
+
+          {# ── Per-package derived data ─────────────────────────────────────
+             Twig drops variables set inside a for loop once it ends, so the
+             framework matches are resolved inline with `for … if` instead of
+             being collected into a list first. #}
+          {% set haystack = (package.name ~ " " ~ package.description)|lower %}
+          {% set blurb    = package.description|replace({'"': '', "\r": " ", "\n": " "}) %}
+          {% set is_free  = package.customPrice == false and package.price <= 0 %}
+
+          <article class="pcard js-item"
+                   data-name="{{ package.name|lower }}"
+                   data-search="{{ (package.name ~ " " ~ blurb)|lower|slice(0, 300) }}"
+                   data-price="{{ package.price }}"
+                   data-tags="{% for f in FRAMEWORKS if f.match in haystack %}{{ f.match }} {% endfor %}{% if is_free %}free {% endif %}{% if package.discount.applied %}sale{% endif %}">
+
+            <a class="pcard__media" href="/package/{{ package.id }}">
+              {% if package.image.url %}
+                <img src="{{ package.image.url }}" alt="{{ package.name }}" loading="lazy">
+              {% else %}
+                {# No image set in the dashboard — draw a cover carrying the
+                   package name instead of showing a broken frame. #}
+                {# Colours are also set as attributes, not only classes, so the
+                   art still renders if the stylesheet is missing or cut off. #}
+                <svg class="cover" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice"
+                     role="img" aria-label="{{ package.name }}">
+                  <rect class="cover__plate" width="640" height="400" fill="#202020"/>
+                  <circle class="cover__orb" cx="150" cy="80" r="210" fill="rgba(200,40,30,.32)"/>
+                  <circle class="cover__orb cover__orb--2" cx="540" cy="330" r="170" fill="rgba(255,255,255,.05)"/>
+                  <text class="cover__name cover__name--sm" x="320" y="220" text-anchor="middle"
+                        fill="#ffffff" font-family="Sora, sans-serif" font-size="62" font-weight="800"
+                        textLength="540" lengthAdjust="spacingAndGlyphs">{{ package.name }}</text>
+                </svg>
+              {% endif %}
+
+              <span class="pcard__scrim" aria-hidden="true"></span>
+
+              <div class="pcard__flags">
+                {% if package.discount.applied %}
+                  <span class="tag tag--accent"><i class="fa-solid fa-tag"></i> {{ __("Sale") }}</span>
+                {% endif %}
+                {% if is_free %}
+                  <span class="tag tag--accent">{{ __("Free") }}</span>
+                {% endif %}
+                {% if package.type == "subscription" %}
+                  <span class="tag"><i class="fa-solid fa-rotate"></i> {{ __("Subscription") }}</span>
+                {% endif %}
+                {% if package.countdownEnds %}
+                  <span class="tag tag--danger">
+                    <i class="fa-regular fa-clock"></i>
+                    <span data-countdown="{{ package.countdownEnds }}" data-expired="{{ __("Ended") }}">{{ __("Ending soon") }}</span>
+                  </span>
+                {% endif %}
+              </div>
+            </a>
+
+            <div class="pcard__body">
+
+              <a class="pcard__name" href="/package/{{ package.id }}">{{ package.name }}</a>
+
+              {% if SHOW_DESC and blurb %}
+                <p class="pcard__desc">
+                  {{ blurb|slice(0, DESC_LENGTH) }}{% if blurb|length > DESC_LENGTH %}…{% endif %}
+                </p>
+              {% endif %}
+
+              <div class="pcard__chips">
+                {% for f in FRAMEWORKS if f.match in haystack %}
+                  <span class="chip chip--sm"><i class="{{ f.icon }}"></i> {{ f.label }}</span>
+                {% else %}
+                  {% for f in FRAMEWORKS_DEFAULT %}
+                    <span class="chip chip--sm"><i class="fa-solid fa-check"></i> {{ f }}</span>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+
+              <div class="pcard__foot">
+
+                <div class="pcard__pricebox">
+                  <span class="pcard__pricelabel">{{ __("Price") }}</span>
+                  <div class="pcard__price">
+                    {% if package.customPrice %}
+                      {{ __("Your choice") }}
+                    {% elseif package.price > 0 %}
+                      {% if package.discount.applied %}
+                        <span class="discount">{{ package.discount.original|money }}</span>
+                      {% endif %}
+                      <i class="fa-solid fa-tag"></i>
+                      {{ package.price|money }} <small>{{ basket.currency }}</small>
+                    {% else %}
+                      <span class="pcard__price--free"><i class="fa-solid fa-gift"></i> {{ __("Free") }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="pcard__actions">
+                  {% if package.basket %}
+                    <a class="btn btn--danger btn--block" href="/checkout/packages/remove/{{ package.id }}">
+                      <i class="fa-solid fa-trash"></i> {{ __("Remove from basket") }}
+                    </a>
+                  {% elseif QUICK_ADD and package.customPrice == false and package.type == "subscription" %}
+                    <a class="btn btn--accent btn--block" href="/checkout/packages/add/{{ package.id }}/subscribe">
+                      <i class="fa-solid fa-rotate"></i> {{ __("Subscribe") }}
+                    </a>
+                  {% elseif QUICK_ADD and package.customPrice == false %}
+                    <a class="btn btn--accent btn--block" href="/checkout/packages/add/{{ package.id }}/single">
+                      <i class="fa-solid fa-cart-shopping"></i> {{ __("Add to basket") }}
+                    </a>
+                  {% else %}
+                    <a class="btn btn--accent btn--block" href="/package/{{ package.id }}">
+                      <i class="fa-solid fa-arrow-right"></i> {{ __("View package") }}
+                    </a>
+                  {% endif %}
+
+                  <a class="btn btn--ghost btn--icon" href="/package/{{ package.id }}"
+                     title="{{ __("View details") }}" aria-label="{{ __("View details") }}">
+                    <i class="fa-solid fa-circle-info"></i>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+          </article>
+
+        {% endfor %}
+
+      </div>
+
+      <div class="empty" id="catalog-empty" hidden>
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <p>{{ __("Nothing matches your search.") }}</p>
+      </div>
+
+    </div>
+
+  {% else %}
+
+    <div class="empty">
+      <i class="fa-solid fa-box-open"></i>
+      <p>{{ __("No packages to display in this category.") }}</p>
+      <a class="btn btn--ghost btn--sm" href="/">{{ __("Back to the store") }}</a>
+    </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{# ═══════════════════════════════════════════════════════════════════════
+   EDIT ME — FAQ
+   Add, remove or reorder entries in FAQ_ITEMS. Add or remove links in
+   FAQ_LINKS. Nothing else in this file needs touching.
+   ═══════════════════════════════════════════════════════════════════════ #}
+{% set FAQ_ITEMS = [
+  {
+    "q": "How fast is delivery?",
+    "a": "Instantly. As soon as your payment clears, the package is granted to your account automatically — there is nothing to wait for and no manual step on our side."
+  },
+  {
+    "q": "Do I get updates after buying?",
+    "a": "Yes. Every purchase includes lifetime updates. When we ship a fix or a new feature it appears in your account at no extra cost."
+  },
+  {
+    "q": "Can I gift a package to someone else?",
+    "a": "Yes. On any package page, click Gift, enter the recipient's username and complete the checkout. The package is delivered straight to them."
+  },
+  {
+    "q": "What happens if I lose access to my account?",
+    "a": "Your purchases are tied to your licence, not to a single session. Open a ticket in our Discord with your transaction ID and we will restore access."
+  },
+  {
+    "q": "Which frameworks are supported?",
+    "a": "Each product page lists the frameworks it supports. If you are unsure whether a resource fits your server, ask in our Discord before buying."
+  },
+  {
+    "q": "Do you offer refunds?",
+    "a": "Because resources are delivered digitally and instantly, all sales are final. If something does not work as described, contact support and we will fix it."
+  }
+] %}
+
+{% set FAQ_LINKS = [
+  { "icon": "fa-brands fa-discord", "label": "Discord",       "url": "#" },
+  { "icon": "fa-brands fa-youtube", "label": "YouTube",       "url": "#" },
+  { "icon": "fa-brands fa-x-twitter", "label": "X / Twitter", "url": "#" },
+  { "icon": "fa-solid fa-book",     "label": "Documentation", "url": "#" }
+] %}
+
+
+<div class="faq">
+
+  <aside class="faq__aside">
+    <p class="sec__sub">{{ __("Still stuck? Reach us on any of these and we will get back to you.") }}</p>
+    <div class="social">
+      {% for link in FAQ_LINKS %}
+        <a href="{{ link.url }}" target="_blank" rel="noopener">
+          <i class="{{ link.icon }}"></i> {{ link.label }}
+        </a>
+      {% endfor %}
+    </div>
+  </aside>
+
+  <div class="faq__list">
+    {% for item in FAQ_ITEMS %}
+      <div class="qa">
+        <button type="button" class="qa__q">{{ item.q }}</button>
+        <div class="qa__a">
+          <div class="qa__inner">{{ item.a }}</div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>

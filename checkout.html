@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<section class="pagehead">
+  <div class="shell pagehead__inner">
+    <nav class="crumbs">
+      <a href="/">{{ __("Home") }}</a>
+      <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+      <span>{{ __("Checkout") }}</span>
+    </nav>
+    <h1 class="pagehead__title"><span class="g-w">{{ __("Your") }}</span> <span class="g-a">{{ __("basket") }}</span></h1>
+  </div>
+</section>
+
+<div class="shell">
+  <div class="co">
+
+    <div>
+
+      <div class="card">
+        <div class="card__head">
+          <div>
+            <h2 class="card__title">{{ __("Items") }}</h2>
+            <p class="card__sub">{{ __("Review your order before paying.") }}</p>
+          </div>
+          <span class="tag tag--accent">{{ basket.packages|length }} {{ __("items") }}</span>
+        </div>
+
+        {% if basket.packages|length > 0 %}
+          {% for package in basket.packages %}
+            <div class="line">
+              <div class="line__text">
+                <a class="line__name" href="/package/{{ package.id }}">{{ package.name }}</a>
+                <span class="line__price">{{ package.price|money }} {{ basket.currency }}</span>
+                {% if package.gift_username %}
+                  <span class="line__meta"><i class="fa-solid fa-gift"></i> {{ __("Gift for") }} {{ package.gift_username }}</span>
+                {% endif %}
+              </div>
+              <a class="iconbtn iconbtn--danger" href="/checkout/packages/remove/{{ package.id }}" title="{{ __("Remove") }}">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <p>{{ __("Your basket is empty.") }}</p>
+            <a class="btn btn--ghost btn--sm" href="/">{{ __("Browse the store") }}</a>
+          </div>
+        {% endif %}
+      </div>
+
+
+      <div class="card">
+        <div class="card__head">
+          <div>
+            <h2 class="card__title">{{ __("Coupons & gift cards") }}</h2>
+            <p class="card__sub">{{ __("Have a code? Redeem it here.") }}</p>
+          </div>
+        </div>
+
+        <form method="post" action="/checkout/coupons/add">
+          <div class="joined">
+            <input type="text" name="coupon" class="input" placeholder="{{ __("Enter your code") }}" autocomplete="off">
+            <button type="submit" class="btn btn--accent">{{ __("Redeem") }}</button>
+          </div>
+        </form>
+
+        <div class="coupon-list">
+          {% for coupon in basket.coupons %}
+            <div class="coupon">
+              <span class="coupon__code">{{ coupon.code }}</span>
+              <span class="coupon__desc">{{ coupon.description }}</span>
+              <a class="iconbtn iconbtn--danger" href="/checkout/coupons/remove/{{ coupon.code }}" title="{{ __("Remove") }}">
+                <i class="fa-solid fa-xmark"></i>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+
+    <aside>
+      <div class="card summary">
+        <div class="card__head">
+          <h2 class="card__title">{{ __("Summary") }}</h2>
+        </div>
+
+        <div class="summary__row">
+          <span>{{ __("Items") }}</span>
+          <span>{{ basket.packages|length }}</span>
+        </div>
+
+        {% if basket.coupons|length > 0 %}
+          <div class="summary__row">
+            <span>{{ __("Coupons applied") }}</span>
+            <span>{{ basket.coupons|length }}</span>
+          </div>
+        {% endif %}
+
+        <div class="summary__row summary__row--total">
+          <span>{{ __("Total") }}</span>
+          <strong>{{ basket.price|money }} {{ basket.currency }}</strong>
+        </div>
+
+        {% if basket.packages|length > 0 %}
+          <tebex-checkout ident="{{ basket.ident }}" id="tebex-checkout">
+            <button type="submit" class="btn btn--accent btn--lg btn--block">
+              {{ __("Proceed to checkout") }} <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </tebex-checkout>
+        {% else %}
+          <a class="btn btn--ghost btn--block" href="/" style="margin-top:16px">{{ __("Browse the store") }}</a>
+        {% endif %}
+
+        <p class="summary__note">
+          <i class="fa-solid fa-lock"></i>
+          <span>{{ __("Secure payment handled by Tebex. Your card details never touch this store.") }}</span>
+        </p>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var el = document.getElementById('tebex-checkout');
+  if (!el) return;
+  el.addEventListener('payment:complete', function () { document.location.href = '/'; });
+})();
+</script>
+
+{% endblock %}

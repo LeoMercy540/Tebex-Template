@@ -1,0 +1,62 @@
+{% if module.display %}
+{# The .featured-module wrapper is what layout.twig's JS looks for.
+   It is display:contents in CSS, so the card below lands directly in the grid. #}
+<div class="featured-module">
+
+  <article class="pk">
+
+    <a class="pk__media" href="/package/{{ module.package.id }}">
+      {% if module.package.image.url %}
+        <img src="{{ module.package.image.url }}" alt="{{ module.package.name }}" loading="lazy">
+      {% else %}
+        {# Colours are also set as attributes, not only classes, so the art
+           still renders if the stylesheet is missing or cut off. #}
+        <svg class="cover" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice"
+             role="img" aria-label="{{ module.package.name }}">
+          <rect class="cover__plate" width="640" height="400" fill="#202020"/>
+          <circle class="cover__orb" cx="150" cy="80" r="210" fill="rgba(200,40,30,.32)"/>
+          <circle class="cover__orb cover__orb--2" cx="540" cy="330" r="170" fill="rgba(255,255,255,.05)"/>
+          <text class="cover__name cover__name--sm" x="320" y="220" text-anchor="middle"
+                fill="#ffffff" font-family="Sora, sans-serif" font-size="62" font-weight="800"
+                textLength="540" lengthAdjust="spacingAndGlyphs">{{ module.package.name }}</text>
+        </svg>
+      {% endif %}
+      <div class="pk__flags">
+        <span class="tag tag--accent"><i class="fa-solid fa-fire"></i> {{ __("Featured") }}</span>
+        {% if module.package.discount.applied %}
+          <span class="tag tag--danger">{{ __("Sale") }}</span>
+        {% endif %}
+      </div>
+    </a>
+
+    <div class="pk__body">
+      <a class="pk__name" href="/package/{{ module.package.id }}">{{ module.package.name }}</a>
+
+      <div class="pk__foot">
+        <div class="pk__price">
+          {% if module.package.customPrice == false and module.package.price > 0 %}
+            {% if module.package.discount.applied %}
+              <span class="discount">{{ module.package.discount.original|money }}</span>
+            {% endif %}
+            {{ module.package.price|money }} <small>{{ module.package.currency }}</small>
+          {% else %}
+            <span class="pk__price--free">{{ __("Free") }}</span>
+          {% endif %}
+        </div>
+
+        {% if module.package.basket %}
+          <a class="btn btn--danger btn--sm" href="/checkout/packages/remove/{{ module.package.id }}">
+            <i class="fa-solid fa-trash"></i> {{ __("Remove") }}
+          </a>
+        {% else %}
+          <a class="btn btn--accent btn--sm" href="/package/{{ module.package.id }}">
+            <i class="fa-solid fa-cart-plus"></i> {{ __("View") }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>
+
+</div>
+{% endif %}

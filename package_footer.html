@@ -1,0 +1,116 @@
+{# ═══════════════════════════════════════════════════════════════════════
+   EDIT ME — per-package quick links shown under the buy buttons.
+   Set either to "" to hide that button.
+   ═══════════════════════════════════════════════════════════════════════ #}
+{% set YOUTUBE_URL = "#" %}
+{% set DISCORD_URL = "#" %}
+
+<div class="buybox">
+
+  <div class="buybox__price">
+    {% if package.customPrice %}
+      <span style="font-size:20px">{{ __("Name your price") }}</span>
+    {% elseif package.price == 0.00 %}
+      <span>{{ __("Free") }}</span>
+    {% else %}
+      {{ package.price|money }} <small>{{ basket.currency }}</small>
+    {% endif %}
+  </div>
+
+  <div class="buybox__actions"
+       {% if package.purchasable == false %}title="{{ package.reason }}"{% endif %}>
+
+    {% if package.basket %}
+
+      <a class="btn btn--danger btn--block" href="/checkout/packages/remove/{{ package.id }}">
+        <i class="fa-solid fa-trash"></i> {{ __("Remove from cart") }}
+      </a>
+
+    {% else %}
+
+      {% if package.type != "single" %}
+        <a class="btn btn--accent {% if package.purchasable == false %}is-disabled{% endif %}"
+           href="/checkout/packages/add/{{ package.id }}/subscribe" data-magnetic>
+          <i class="fa-solid fa-rotate"></i> {{ __("Subscribe") }}
+        </a>
+      {% endif %}
+
+      {% if package.type != "subscription" %}
+        <a class="btn btn--accent {% if package.purchasable == false %}is-disabled{% endif %}"
+           href="/checkout/packages/add/{{ package.id }}/single" data-magnetic>
+          <i class="fa-solid fa-cart-plus"></i> {{ __("Add to cart") }}
+        </a>
+      {% endif %}
+
+      {% if package.disable_gifting == false %}
+        <button type="button" class="btn btn--outline" id="gift-toggle">
+          <i class="fa-solid fa-gift"></i> {{ __("Gift") }}
+        </button>
+      {% endif %}
+
+    {% endif %}
+
+  </div>
+
+  {% if package.purchasable == false and package.reason %}
+    <p class="summary__note"><i class="fa-solid fa-circle-info"></i> {{ package.reason }}</p>
+  {% endif %}
+
+  {% if package.disable_gifting == false %}
+    <div class="giftbox" id="gift-fields" hidden>
+      <p class="giftbox__hint">{{ __("Enter the username of the person receiving this package.") }}</p>
+      <form name="gift-form" method="get" action="/checkout/packages/add/{{ package.id }}/single/gift">
+        <div class="joined">
+          <input type="text" name="username" class="input" placeholder="{{ __("Username") }}" required>
+          <button type="submit" class="btn btn--accent">{{ __("Send gift") }}</button>
+        </div>
+      </form>
+    </div>
+  {% endif %}
+
+  {% if YOUTUBE_URL or DISCORD_URL %}
+    <div class="buybox__links">
+      {% if YOUTUBE_URL %}
+        <a class="btn btn--ghost btn--sm btn--yt" href="{{ YOUTUBE_URL }}" target="_blank" rel="noopener">
+          <i class="fa-brands fa-youtube"></i> {{ __("Preview") }}
+        </a>
+      {% endif %}
+      {% if DISCORD_URL %}
+        <a class="btn btn--ghost btn--sm btn--dc" href="{{ DISCORD_URL }}" target="_blank" rel="noopener">
+          <i class="fa-brands fa-discord"></i> {{ __("Support") }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+<div class="card">
+  <p class="summary__note" style="margin-top:0">
+    <i class="fa-solid fa-bolt"></i>
+    <span>{{ __("Instant delivery — the package is granted to your account as soon as the payment clears.") }}</span>
+  </p>
+  <p class="summary__note">
+    <i class="fa-solid fa-lock"></i>
+    <span>{{ __("Payments are processed securely by Tebex. We never see your card details.") }}</span>
+  </p>
+  <p class="summary__note">
+    <i class="fa-solid fa-arrows-rotate"></i>
+    <span>{{ __("Lifetime updates included with every purchase.") }}</span>
+  </p>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('gift-toggle');
+  var box = document.getElementById('gift-fields');
+  if (!btn || !box) return;
+  btn.addEventListener('click', function () {
+    box.hidden = !box.hidden;
+    if (!box.hidden) {
+      var input = box.querySelector('input');
+      if (input) input.focus();
+    }
+  });
+})();
+</script>

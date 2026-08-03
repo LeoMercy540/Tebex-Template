@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{# ═══════════════════════════════════════════════════════════════════════
+   EDIT ME — PRODUCT PAGE
+   These apply to every package. Anything package-specific (name, price,
+   image, description) comes from Tebex automatically.
+   ═══════════════════════════════════════════════════════════════════════ #}
+
+{# Compatibility chips shown under the breadcrumbs. Set to [] to hide. #}
+{% set FRAMEWORKS = ["Standalone", "ESX", "QBCore", "Qbox"] %}
+
+{# Star rating shown in the banner. Set RATING = 0 to hide the whole line. #}
+{% set RATING       = 5 %}
+{% set RATING_COUNT = "800+ buyers" %}
+
+{# The Requirements section. Set to [] to remove the section and its tab. #}
+{% set REQUIREMENTS = [
+  { "icon": "fa-solid fa-server",        "title": "FiveM server",      "text": "Any recent artifacts build. Works on OneSync and OneSync Infinity." },
+  { "icon": "fa-solid fa-cube",          "title": "Framework",         "text": "Runs standalone, with built-in support for ESX, QBCore and Qbox." },
+  { "icon": "fa-solid fa-bolt",          "title": "ox_lib",            "text": "Free dependency. Grab the latest release from GitHub." },
+  { "icon": "fa-solid fa-key",           "title": "Keymaster access",  "text": "The resource is delivered to the FiveM account you buy with." }
+] %}
+
+{# Pull screenshots out of the description into the gallery strip.        #}
+{# HIDE_DESC_IMAGES = true removes them from the text once collected.     #}
+{% set GALLERY_FROM_DESC = true %}
+{% set HIDE_DESC_IMAGES  = false %}
+
+
+<section class="pdhero">
+  {% if package.image.url %}
+    <div class="pdhero__bg" style="background-image:url('{{ package.image.url }}')"></div>
+  {% endif %}
+
+  <div class="shell pdhero__inner">
+
+    <div>
+      <nav class="crumbs">
+        <a href="/">{{ __("Home") }}</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+        <a href="/category/{{ package.category }}">{{ __("Store") }}</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+        <span>{{ package.name }}</span>
+      </nav>
+
+      {% if FRAMEWORKS|length > 0 or package.type == "subscription" %}
+        <div class="chips" style="margin-top:14px">
+          {% for f in FRAMEWORKS %}
+            <span class="chip"><i class="fa-solid fa-check"></i> {{ f }}</span>
+          {% endfor %}
+          {% if package.type == "subscription" %}
+            <span class="chip chip--accent"><i class="fa-solid fa-rotate"></i> {{ __("Subscription") }}</span>
+          {% endif %}
+          {% if package.discount.applied %}
+            <span class="chip chip--accent"><i class="fa-solid fa-tag"></i> {{ __("On sale") }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <h1 class="pdhero__title" data-anim="fade-up">
+        <span class="g-w">{{ package.name }}</span>
+      </h1>
+
+      <div class="pdfacts" data-anim="fade-up" data-anim-delay="1">
+        {% if RATING > 0 %}
+          <span>
+            <span class="stars">
+              {% for i in 1..5 %}{% if i <= RATING %}★{% else %}☆{% endif %}{% endfor %}
+            </span>
+            {{ RATING_COUNT }}
+          </span>
+        {% endif %}
+        <span><i class="fa-solid fa-bolt"></i> {{ __("Instant delivery") }}</span>
+        <span><i class="fa-solid fa-arrows-rotate"></i> {{ __("Lifetime updates") }}</span>
+        {% if package.countdownEnds %}
+          <span>
+            <i class="fa-regular fa-clock"></i>
+            <span data-countdown="{{ package.countdownEnds }}" data-expired="{{ __("Ended") }}">{{ __("Ending soon") }}</span>
+          </span>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Price + one-click buy. The full option set (subscribe, gift, custom
+       price) stays in the sidebar box below — this is the shortcut. #}
+    <div class="pdbuy" data-anim="scale-in" data-anim-delay="1">
+      <div class="pdbuy__price">
+        {% if package.customPrice %}
+          <span style="font-size:22px">{{ __("Name your price") }}</span>
+        {% elseif package.price == 0.00 %}
+          <span>{{ __("Free") }}</span>
+        {% else %}
+          {% if package.discount.applied %}
+            <span class="discount">{{ package.discount.original|money }}</span>
+          {% endif %}
+          {{ package.price|money }} <small>{{ basket.currency }}</small>
+        {% endif %}
+      </div>
+
+      {% if package.basket %}
+        <a class="btn btn--danger btn--block" href="/checkout/packages/remove/{{ package.id }}">
+          <i class="fa-solid fa-trash"></i> {{ __("Remove from cart") }}
+        </a>
+      {% elseif package.type == "subscription" %}
+        <a class="btn btn--accent btn--block {% if package.purchasable == false %}is-disabled{% endif %}"
+           href="/checkout/packages/add/{{ package.id }}/subscribe" data-magnetic>
+          <i class="fa-solid fa-rotate"></i> {{ __("Subscribe") }}
+        </a>
+      {% else %}
+        <a class="btn btn--accent btn--block {% if package.purchasable == false %}is-disabled{% endif %}"
+           href="/checkout/packages/add/{{ package.id }}/single" data-magnetic>
+          <i class="fa-solid fa-cart-plus"></i> {{ __("Add to cart") }}
+        </a>
+      {% endif %}
+
+      <a class="btn btn--ghost btn--sm btn--block" href="#buy">
+        <i class="fa-solid fa-gift"></i> {{ __("Gift, subscribe and more options") }}
+      </a>
+
+      <div class="pdbuy__note">
+        <i class="fa-solid fa-lock"></i>
+        <span>{{ __("Secure checkout by Tebex") }}</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<div class="shell">
+
+  <div class="pd">
+
+    <div>
+
+      {# ── Gallery ─────────────────────────────────────────────────────────
+         The main frame holds the package image; the JS collects any further
+         screenshots from the description below into the thumbnail strip. #}
+      <div class="pgal"
+           data-gallery
+           {% if GALLERY_FROM_DESC %}data-gallery-source=".prose"{% endif %}
+           {% if HIDE_DESC_IMAGES %}data-gallery-hide-source="true"{% endif %}>
+
+        <div class="shot pgal__main">
+          {% if package.image.url %}
+            <img src="{{ package.image.url }}" alt="{{ package.name }}" data-lightbox>
+          {% else %}
+            {# No image on the package — draw cover art carrying its name. #}
+            <svg class="cover" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice"
+                 role="img" aria-label="{{ package.name }}">
+              <defs>
+                <linearGradient id="cvbg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0"  stop-color="#202020"/>
+                  <stop offset="1"  stop-color="#121212"/>
+                </linearGradient>
+                {# The stop colours are classes, not attributes — CSS variables
+                   only resolve inside real style rules, never in SVG attrs. #}
+                <radialGradient id="cvglow" cx="26%" cy="24%" r="60%">
+                  <stop offset="0"    class="cover__stop-in"/>
+                  <stop offset="100%" class="cover__stop-out"/>
+                </radialGradient>
+                <pattern id="cvgrid" width="48" height="48" patternUnits="userSpaceOnUse">
+                  <path d="M48 0H0v48" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="1280" height="720" fill="url(#cvbg)"/>
+              <rect width="1280" height="720" fill="url(#cvgrid)"/>
+              <rect width="1280" height="720" fill="url(#cvglow)"/>
+              {# Attributes as well as classes — the art must survive a missing
+                 or truncated stylesheet. #}
+              <text class="cover__eyebrow" x="640" y="300" text-anchor="middle"
+                    fill="rgba(255,255,255,.55)" font-family="Sora, sans-serif"
+                    font-size="34" font-weight="600" letter-spacing="7">{{ store.name }}</text>
+              <text class="cover__name" x="640" y="420" text-anchor="middle"
+                    fill="#ffffff" font-family="Sora, sans-serif" font-size="118" font-weight="800"
+                    textLength="1080" lengthAdjust="spacingAndGlyphs">{{ package.name }}</text>
+            </svg>
+          {% endif %}
+          <span class="pgal__count" hidden></span>
+        </div>
+
+        <div class="pgal__thumbs" hidden></div>
+      </div>
+
+      {# ── Section nav ─────────────────────────────────────────────────── #}
+      <nav class="pdnav" data-spy>
+        <a href="#overview">{{ __("Overview") }}</a>
+        {% if REQUIREMENTS|length > 0 %}<a href="#requirements">{{ __("Requirements") }}</a>{% endif %}
+        <a href="#reviews">{{ __("Reviews") }}</a>
+        <a href="#faq">{{ __("FAQ") }}</a>
+      </nav>
+
+      <section class="pdsec" id="overview">
+        <h2 class="pdsec__title"><i class="fa-solid fa-align-left"></i> {{ __("Overview") }}</h2>
+        <div class="prose">{{ package.description|raw }}</div>
+      </section>
+
+      {% if REQUIREMENTS|length > 0 %}
+        <section class="pdsec" id="requirements">
+          <h2 class="pdsec__title"><i class="fa-solid fa-list-check"></i> {{ __("Requirements") }}</h2>
+          <div class="reqs" data-anim-stagger="fade-up">
+            {% for r in REQUIREMENTS %}
+              <div class="req">
+                <div class="req__icon"><i class="{{ r.icon }}"></i></div>
+                <div>
+                  <div class="req__title">{{ r.title }}</div>
+                  <div class="req__text">{{ r.text|raw }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+    </div>
+
+    <aside class="pd__aside" id="buy">
+      {% include 'package_footer.twig' %}
+    </aside>
+
+  </div>
+
+
+  <section class="sec pdsec" id="reviews">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-quote-left"></i> {{ __("Testimonials") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("What people") }}</span> <span class="g-a">{{ __("say") }}</span></h2>
+    </div>
+    <div data-anim="fade-up" data-anim-delay="1">{% include "reviews.twig" %}</div>
+  </section>
+
+
+  <section class="sec pdsec" id="faq">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-circle-question"></i> {{ __("Help") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Frequently asked") }}</span> <span class="g-a">{{ __("questions") }}</span></h2>
+    </div>
+    <div data-anim="fade-up" data-anim-delay="1">{% include "faq.twig" %}</div>
+  </section>
+
+
+  <section class="sec">
+    <div class="sec__head" data-anim="fade-up">
+      <span class="sec__eyebrow"><i class="fa-solid fa-layer-group"></i> {{ __("You may also like") }}</span>
+      <h2 class="sec__title"><span class="g-w">{{ __("Recommended") }}</span> <span class="g-a">{{ __("scripts") }}</span></h2>
+    </div>
+    <div id="featured-slot" data-anim-stagger="scale-in"></div>
+  </section>
+
+</div>
+
+{# Tebex prints every enabled module here; layout.twig's JS moves each one
+   into its slot above. Do not remove. #}
+<div id="modules-stage" hidden>{{ modules|raw }}</div>
+
+{% endblock %}

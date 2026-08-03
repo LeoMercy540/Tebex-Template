@@ -1,0 +1,32 @@
+{# The .donator-module wrapper is what layout.twig's JS looks for.
+   It renders as a compact pill inside the header on desktop. #}
+<div class="donator-module">
+  {% if module.donor %}
+    <div class="top-donator" title="{{ __("Top supporter") }}">
+      <div class="avatar">
+        <img src="{{ module.skin }}" alt="{{ module.ign }}">
+      </div>
+      <div class="info">
+        <div class="ign">{{ module.ign }}</div>
+        <div class="amount">
+          {% if module.displayAmount %}
+            {{ module.total|money }} {{ store.currency }}
+          {% else %}
+            {{ __("Top supporter") }}
+          {% endif %}
+          {% if module.period == "hourly" %}
+            {{ __("this hour") }}
+          {% elseif module.period == "daily" %}
+            {{ __("today") }}
+          {% elseif module.period == "monthly" %}
+            {{ __("this month") }}
+          {% elseif module.period == "yearly" %}
+            {{ __("this year") }}
+          {% else %}
+            {{ __("this week") }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>

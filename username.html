@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="shell auth">
+  <div class="auth__card">
+
+    <div class="auth__icon"><i class="fa-solid fa-user"></i></div>
+    <h1 class="auth__title"><span class="g-w">{{ __("Sign") }}</span> <span class="g-a">{{ __("in") }}</span></h1>
+    <p class="auth__sub">{{ __("Log in with your account so we can identify you in game and deliver your purchase.") }}</p>
+
+    {# Tebex prints its own login form here. Styling for it lives in style.css. #}
+    {{ loginform|raw }}
+
+    <p class="summary__note">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>{{ __("Having trouble signing in? Open a ticket in our Discord and we will sort it out.") }}</span>
+    </p>
+
+  </div>
+</div>
+
+{% endblock %}
