@@ -1,0 +1,614 @@
+
+
+
+/* ── 31.5  Lightbox ─────────────────────────────────────────────────────────
+   The JS wires this to .gal__item and to any image inside a .prose block, so
+   screenshots in Tebex package descriptions become click-to-zoom for free.
+   ------------------------------------------------------------------------- */
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: max(20px, 4vw);
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(6, 6, 6, .88);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: opacity var(--t) var(--ease), visibility var(--t);
+}
+
+.lb.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lb img {
+  max-width: min(1200px, 100%);
+  max-height: 86vh;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-3), 0 0 80px rgba(var(--accent-rgb), .18);
+  transform: scale(.96);
+  transition: transform .35s var(--ease);
+}
+
+.lb.is-open img {
+  transform: scale(1);
+}
+
+.lb__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-hover);
+  border-radius: 50%;
+  background: rgba(18, 18, 18, .7);
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color var(--t), color var(--t), transform var(--t) var(--ease);
+}
+
+.lb__close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(90deg);
+}
+
+/* Package descriptions: images become cards and announce they are clickable. */
+.prose img {
+  border-radius: var(--r-md);
+  cursor: zoom-in;
+  transition: transform var(--t) var(--ease), box-shadow var(--t);
+}
+
+.prose img:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+}
+
+
+/* ── 31.6  Parallax + lazy shimmer ──────────────────────────────────────── */
+
+/* The JS writes --py on the element while it is on screen; the images inside
+   already fold --py into their transform, so nothing else is needed here.
+   The extra scale gives the offset room to move without exposing an edge. */
+[data-parallax] {
+  --py: 0px;
+}
+
+[data-parallax] img,
+[data-parallax] .cat__img {
+  --zoom: 1.12;
+  transition: transform .25s var(--ease);
+  will-change: transform;
+}
+
+[data-parallax]:hover img,
+[data-parallax]:hover .cat__img {
+  --zoom: 1.16;
+}
+
+/* Loading shimmer. .is-lazy is added by the JS, so with no JS there is no
+   shimmer to get stuck on. */
+.shot.is-lazy:not(.is-loaded)::after {
+  background-image: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, .06) 45%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to { background-position: -220% 0; }
+}
+
+@media (min-width: 640px) {
+
+  .cats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gal__track {
+    grid-auto-columns: minmax(320px, 56%);
+  }
+}
+
+@media (min-width: 1024px) {
+
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+    gap: 48px;
+  }
+
+  .cats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gal__track {
+    grid-auto-columns: minmax(360px, 40%);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   32. PRODUCT PAGE
+   --------------------------------------------------------------------------
+   32.1  .cover  — SVG cover art carrying the product name
+   32.2  .pdhero — full-bleed banner: art behind, title + price in front
+   32.3  .pgal   — main viewer + thumbnail strip
+   32.4  .pdnav  — sticky section nav with scroll spy
+   32.5  .reqs   — requirements / compatibility blocks
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 32.1  Cover art ────────────────────────────────────────────────────────
+   Inline SVG, so it inherits the theme tokens and costs no request. Used
+   wherever a product has no image of its own — the product name is drawn
+   into the artwork the same way the big stores do it.
+   ------------------------------------------------------------------------- */
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Drawn covers zoom on hover exactly like a real card image would. */
+.pk__media .cover {
+  transition: transform .5s var(--ease);
+}
+
+.pk:hover .pk__media .cover {
+  transform: scale(1.05);
+}
+
+.cover__name {
+  font-family: var(--font-display);
+  font-size: 118px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  fill: #fff;
+}
+
+.cover__eyebrow {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  fill: rgba(255, 255, 255, .55);
+  text-transform: uppercase;
+}
+
+/* Card-sized cover: flat shapes only, so it can repeat on a page without
+   duplicating gradient ids. */
+.cover__plate {
+  fill: var(--bg-elev-2);
+}
+
+.cover__orb {
+  fill: rgba(var(--accent-rgb), .32);
+}
+
+.cover__orb--2 {
+  fill: rgba(255, 255, 255, .05);
+}
+
+.cover__name--sm {
+  font-size: 62px;
+}
+
+/* Gradient stops have to be styled here — var() does not resolve inside SVG
+   presentation attributes, only inside real declarations. */
+.cover__stop-in {
+  stop-color: rgba(var(--accent-rgb), .55);
+}
+
+.cover__stop-out {
+  stop-color: rgba(var(--accent-rgb), 0);
+}
+
+
+/* ── 32.2  Product banner ───────────────────────────────────────────────── */
+
+.pdhero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  padding-block: 28px 32px;
+}
+
+/* The product art, blown up and blurred behind the copy. */
+.pdhero__bg {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  filter: blur(42px) saturate(130%);
+  opacity: .5;
+  transform: scale(1.08);
+}
+
+.pdhero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(18, 18, 18, .72), rgba(18, 18, 18, .94)),
+    radial-gradient(70% 60% at 15% 0%, rgba(var(--accent-rgb), .20), transparent 65%);
+}
+
+.pdhero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 20px;
+}
+
+.pdhero__title {
+  font-size: clamp(28px, 6vw, 46px);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.pdhero__sub {
+  max-width: 60ch;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Framework / compatibility chips. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .05);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.chip i {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.chip--accent {
+  border-color: var(--border-accent);
+  background: rgba(var(--accent-rgb), .12);
+  color: var(--text);
+}
+
+/* Inline facts under the title: rating, updated, delivery. */
+.pdfacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 16px;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.pdfacts span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pdfacts i {
+  color: var(--accent);
+}
+
+.pdfacts .stars {
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+/* Compact price + CTA card that sits in the banner on desktop. */
+.pdbuy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--r-lg);
+  background: rgba(26, 26, 26, .78);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-3);
+}
+
+.pdbuy__price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.pdbuy__price small {
+  color: var(--faint);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pdbuy__price .discount {
+  color: var(--faint);
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: line-through;
+}
+
+.pdbuy__note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.pdbuy__note i {
+  color: var(--accent);
+}
+
+
+/* ── 32.3  Gallery: main viewer + thumbnails ────────────────────────────── */
+
+.pgal__main {
+  aspect-ratio: 16 / 9;
+}
+
+.pgal__main img {
+  cursor: zoom-in;
+}
+
+.pgal__thumbs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 96px;
+  gap: 10px;
+  margin-top: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.pgal__thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.pgal__thumb {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--bg-elev-2);
+  cursor: pointer;
+  opacity: .55;
+  padding: 0;
+  transition: opacity var(--t), border-color var(--t), transform var(--t) var(--ease);
+}
+
+.pgal__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pgal__thumb:hover {
+  opacity: .85;
+  transform: translateY(-2px);
+}
+
+.pgal__thumb.is-active {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--glow-soft);
+}
+
+/* Counter pill over the viewer. */
+.pgal__count {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, .6);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* ── 32.4  Sticky section nav ───────────────────────────────────────────── */
+
+.pdnav {
+  position: sticky;
+  top: calc(var(--hdr-h) + 8px);
+  z-index: 20;
+  display: flex;
+  gap: 6px;
+  margin: 26px 0 22px;
+  padding: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: rgba(26, 26, 26, .82);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  scrollbar-width: none;
+}
+
+.pdnav::-webkit-scrollbar {
+  display: none;
+}
+
+.pdnav a {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+  border-radius: var(--r-pill);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--t), color var(--t);
+}
+
+.pdnav a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, .05);
+}
+
+.pdnav a.is-active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+
+/* ── 32.5  Requirements / compatibility ─────────────────────────────────── */
+
+.reqs {
+  display: grid;
+  gap: 10px;
+}
+
+.req {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-elev);
+  transition: border-color var(--t), transform var(--t) var(--ease);
+}
+
+.req:hover {
+  border-color: var(--border-accent);
+  transform: translateX(3px);
+}
+
+.req__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-accent);
+  border-radius: var(--r-sm);
+  background: rgba(var(--accent-rgb), .10);
+  color: var(--accent);
+  font-size: 14px;
+}
+
+.req__title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.req__text {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.req__text a {
+  color: var(--accent);
+}
+
+/* Section anchors clear the sticky header when jumped to. */
+.pdsec {
+  scroll-margin-top: calc(var(--hdr-h) + 70px);
+  padding-top: 30px;
+}
+
+.pdsec__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.pdsec__title i {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+@media (min-width: 1024px) {
+
+  .pdhero {
+    padding-block: 40px 44px;
+  }
+
+  .pdhero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
+    gap: 40px;
+    align-items: center;
+  }
+
+  .pgal__thumbs {
+    grid-auto-columns: 116px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .hero__art .shot,
+  .hero__chip {
+    animation: none;
+  }
+
+  .req:hover,
+  .pgal__thumb:hover {
+    transform: none;
+  }
+
+  [data-parallax] img,
+  [data-parallax] .cat__img {
+    --zoom: 1;
+    transform: none;
+  }
+
+  .shot.is-lazy:not(.is-loaded)::after {
+    animation: none;
+  }
+}

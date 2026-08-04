@@ -1,0 +1,1138 @@
+
+
+.band__text {
+  max-width: 56ch;
+  color: var(--muted);
+}
+
+.band__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   23. FOOTER
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.ftr {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, .30);
+  padding-top: 48px;
+}
+
+.ftr__grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+  padding-bottom: 40px;
+}
+
+.ftr__brand img {
+  height: 38px;
+  width: auto;
+  margin-bottom: 14px;
+  border-radius: 6px;
+}
+
+.ftr__brand p {
+  max-width: 42ch;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.ftr__social {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.ftr__social a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, .03);
+  color: var(--muted);
+  transition: border-color var(--t), color var(--t), transform var(--t) var(--ease);
+}
+
+.ftr__social a:hover {
+  border-color: var(--border-accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.ftr__head {
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.ftr__links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.ftr__links a {
+  color: var(--faint);
+  font-size: 14px;
+  transition: color var(--t);
+}
+
+.ftr__links a:hover {
+  color: var(--accent);
+}
+
+.ftr__legal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-block: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.ftr__legal strong {
+  color: var(--muted);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   24. MOTION
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   25. BREAKPOINT — 640px  (small tablet)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 640px) {
+
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #featured-slot {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .cartbtn__label {
+    display: inline;
+  }
+
+  .revs__track {
+    grid-auto-columns: minmax(300px, 46%);
+  }
+
+  .ftr__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ftr__legal {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .band {
+    padding: 40px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   26. BREAKPOINT — 1024px  (desktop: real nav, sidebars, sticky offsets)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1024px) {
+
+  :root {
+    --hdr-h: 74px;
+    --gap: 24px;
+  }
+
+  body {
+    font-size: 16px;
+  }
+
+  .nav,
+  .lang,
+  .hdr__auth {
+    display: flex;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  .top-donator {
+    display: flex;
+  }
+
+  .sec {
+    padding-block: 76px;
+  }
+
+  .hero {
+    padding-block: 88px 72px;
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #featured-slot {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .revs__track {
+    grid-auto-columns: minmax(320px, 31.5%);
+  }
+
+  /* Package detail becomes 2-col with a sticky buy box */
+  .pd {
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr);
+    align-items: start;
+    padding-top: 44px;
+  }
+
+  .pd__aside {
+    position: sticky;
+    top: calc(var(--hdr-h) + 16px);
+  }
+
+  /* Checkout becomes 2-col with a sticky summary */
+  .co {
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+    align-items: start;
+    padding-top: 44px;
+  }
+
+  /* FAQ becomes 2-col */
+  .faq {
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .ftr__grid {
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .band {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 44px;
+  }
+
+  .band__cta {
+    flex: 0 0 auto;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   27. BREAKPOINT — 1280px  (wide: 4-up product grids)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1280px) {
+
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  #featured-slot {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .revs__track {
+    grid-auto-columns: minmax(340px, 32%);
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   28. ACCESSIBILITY — reduced motion
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms;
+    animation-iteration-count: 1;
+    transition-duration: .001ms;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .float {
+    animation: none;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   29. PRINT
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media print {
+
+  .promo,
+  .hdr,
+  .ftr,
+  .drawer,
+  .scrim,
+  .site-bg,
+  .toast {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   30. MOTION LAYER
+   --------------------------------------------------------------------------
+   Everything below is additive — remove this whole section and the store
+   still works exactly as before, just without the animation.
+
+   30.1  data-anim  — reveal primitives (declarative, works on any element)
+   30.2  .tilt      — pointer-tracked 3D tilt + glare
+   30.3  hero       — mesh gradient, grain, cursor spotlight
+   30.4  .rail      — infinite marquee
+   30.5  misc       — count-up, magnetic buttons, shine sweep
+   30.6  view transitions
+   30.7  reduced motion
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 30.1  Reveal primitives ────────────────────────────────────────────────
+   Usage:  <div data-anim="fade-up">…</div>
+           <div data-anim="fade-up" data-anim-delay="2">…</div>   (2 × 70ms)
+   Add data-anim-stagger to a container and every direct child animates in
+   sequence — the JS assigns each child its own index.
+
+   Variants: fade-up · fade-down · fade-in · scale-in · blur-in
+             slide-left · slide-right · clip-up
+   ------------------------------------------------------------------------- */
+
+/* The attribute is repeated on purpose: it lifts these rules to the same
+   specificity as .tilt:hover below, so a card that both reveals and tilts
+   keeps its own transition instead of inheriting the tilt one. */
+[data-anim][data-anim] {
+  --anim-i: 0;
+  --anim-step: 70ms;
+  --anim-dur: .7s;
+  opacity: 0;
+  transition:
+    opacity var(--anim-dur) var(--ease) calc(var(--anim-i) * var(--anim-step)),
+    transform var(--anim-dur) var(--ease) calc(var(--anim-i) * var(--anim-step)),
+    filter var(--anim-dur) var(--ease) calc(var(--anim-i) * var(--anim-step)),
+    clip-path var(--anim-dur) var(--ease) calc(var(--anim-i) * var(--anim-step));
+}
+
+/* Only the pre-reveal state carries a transform. Once .is-in lands the rule
+   stops matching entirely, which hands transform back to .tilt cleanly —
+   no "transform: none" fighting the tilt for the rest of the page's life. */
+[data-anim="fade-up"]:not(.is-in)     { transform: translateY(22px); }
+[data-anim="fade-down"]:not(.is-in)   { transform: translateY(-22px); }
+[data-anim="slide-left"]:not(.is-in)  { transform: translateX(28px); }
+[data-anim="slide-right"]:not(.is-in) { transform: translateX(-28px); }
+[data-anim="scale-in"]:not(.is-in)    { transform: scale(.94); }
+[data-anim="blur-in"]:not(.is-in)     { transform: translateY(12px); filter: blur(10px); }
+[data-anim="clip-up"]:not(.is-in)     { transform: translateY(10px); clip-path: inset(100% 0 0 0); }
+
+[data-anim][data-anim].is-in {
+  opacity: 1;
+}
+
+
+/* ── 30.2  Interactive tilt cards ───────────────────────────────────────────
+   The JS attaches this to .pk (package cards), .feat and anything marked
+   [data-tilt]. It writes four custom properties on the element:
+     --rx / --ry  rotation in deg      --mx / --my  cursor position in %
+   Nothing here fires unless the pointer is fine (mouse), so touch devices
+   keep the plain hover behaviour.
+   ------------------------------------------------------------------------- */
+
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+  --lift: 0px;
+  --tilt-glare: 0;
+  /* relative + isolate so the injected glare can sit above the card's media */
+  position: relative;
+  isolation: isolate;
+  transform-style: preserve-3d;
+  transform:
+    perspective(900px)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    translate3d(0, var(--lift), 0);
+  transition:
+    transform .5s var(--ease),
+    border-color var(--t),
+    box-shadow var(--t);
+}
+
+/* While the pointer is on the card we track it every frame — no easing, or
+   the card lags behind the cursor. */
+.tilt.is-tilting {
+  transition:
+    transform .05s linear,
+    border-color var(--t),
+    box-shadow var(--t);
+}
+
+/* Beats the .pk:hover / .feat:hover translateY rules above (same specificity,
+   defined later) so the two transforms never fight. */
+.tilt:hover {
+  --lift: -6px;
+  --tilt-glare: 1;
+  transform:
+    perspective(900px)
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    translate3d(0, var(--lift), 0);
+  border-color: var(--border-accent);
+  box-shadow:
+    var(--shadow-3),
+    0 0 0 1px rgba(var(--accent-rgb), .12),
+    0 24px 60px rgba(var(--accent-rgb), .10);
+}
+
+/* Cursor-following spotlight, injected by the JS as the card's first child. */
+.tilt__glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  opacity: var(--tilt-glare);
+  pointer-events: none;
+  transition: opacity var(--t) var(--ease);
+  background:
+    radial-gradient(
+      420px circle at var(--mx) var(--my),
+      rgba(255, 255, 255, .10),
+      rgba(var(--accent-rgb), .07) 32%,
+      transparent 60%
+    );
+}
+
+/* Accent edge that brightens toward the cursor. */
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: var(--tilt-glare);
+  pointer-events: none;
+  transition: opacity var(--t) var(--ease);
+  background: radial-gradient(
+    300px circle at var(--mx) var(--my),
+    rgba(var(--accent-rgb), .55),
+    transparent 70%
+  );
+  /* Punch the middle out so only the 1px ring paints. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* Media pushes forward in 3D so the card reads as layered, not flat. */
+.tilt .pk__media img {
+  transition: transform .6s var(--ease);
+}
+
+.tilt:hover .pk__media img {
+  transform: scale(1.08);
+}
+
+/* Kept small and only on inset elements — anything pushed too far forward is
+   magnified by the perspective and would clip against the card's overflow. */
+.tilt .feat__icon {
+  transform: translateZ(26px);
+}
+
+
+/* ── 30.3  Live hero backdrop ───────────────────────────────────────────────
+   Three stacked layers inside .hero__fx: an animated mesh gradient, a grain
+   overlay and a spotlight that follows the cursor (JS writes --hx / --hy).
+   ------------------------------------------------------------------------- */
+
+.hero {
+  --hx: 50%;
+  --hy: 40%;
+}
+
+.hero__mesh {
+  position: absolute;
+  inset: -20% -10%;
+  opacity: .85;
+  filter: blur(58px) saturate(140%);
+  background:
+    radial-gradient(38% 44% at 22% 28%, rgba(var(--accent-rgb), .42), transparent 62%),
+    radial-gradient(32% 40% at 78% 22%, rgba(var(--accent-rgb), .22), transparent 64%),
+    radial-gradient(44% 46% at 62% 78%, rgba(255, 255, 255, .07), transparent 66%),
+    radial-gradient(30% 34% at 12% 76%, rgba(var(--accent-rgb), .16), transparent 62%);
+  animation: mesh-drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes mesh-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, 2%, 0) scale(1.08) rotate(1.5deg);
+  }
+  100% {
+    transform: translate3d(-1%, 3%, 0) scale(1.04) rotate(-1deg);
+  }
+}
+
+/* Cursor spotlight — sits over the mesh, under the copy. */
+.hero__spot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  background: radial-gradient(
+    520px circle at var(--hx) var(--hy),
+    rgba(var(--accent-rgb), .16),
+    transparent 62%
+  );
+}
+
+.hero.is-pointing .hero__spot {
+  opacity: 1;
+}
+
+/* Film grain. Pure CSS — an SVG turbulence data URI, no image request. */
+.hero__grain {
+  position: absolute;
+  inset: -100%;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation: grain 1.1s steps(4) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate3d(0, 0, 0); }
+  25%  { transform: translate3d(-3%, 2%, 0); }
+  50%  { transform: translate3d(2%, -3%, 0); }
+  75%  { transform: translate3d(-2%, -2%, 0); }
+  100% { transform: translate3d(3%, 1%, 0); }
+}
+
+/* Hero headline: each line rises behind its own mask. */
+.hero__title .g-w,
+.hero__title .g-a {
+  display: inline-block;
+}
+
+
+/* ── 30.4  Marquee rail ─────────────────────────────────────────────────────
+   <div class="rail" data-rail>
+     <div class="rail__track"> …items… </div>
+   </div>
+   The JS clones the track's children once so the loop is seamless, and sets
+   --rail-dur from the item count.
+   ------------------------------------------------------------------------- */
+
+.rail {
+  position: relative;
+  overflow: hidden;
+  padding-block: 6px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Spacing is a margin on the item, not a flex gap — the duplicated half must
+   be exactly 50% of the track for the loop to be seamless. */
+.rail__track {
+  --rail-dur: 32s;
+  display: flex;
+  width: max-content;
+  animation: rail-scroll var(--rail-dur) linear infinite;
+}
+
+.rail--reverse .rail__track {
+  animation-direction: reverse;
+}
+
+.rail:hover .rail__track {
+  animation-play-state: paused;
+}
+
+@keyframes rail-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.rail__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  margin-right: 14px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  background: var(--bg-elev);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  transition: border-color var(--t), color var(--t), background-color var(--t);
+}
+
+.rail__item i {
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.rail__item:hover {
+  border-color: var(--border-accent);
+  background: var(--bg-elev-2);
+  color: var(--text);
+}
+
+
+/* ── 30.5  Count-up, magnetic buttons, shine sweep ──────────────────────── */
+
+/* Tabular figures stop the tile from jittering while the number counts. */
+.stat__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.stat.tilt:hover .stat__num {
+  text-shadow: 0 0 26px rgba(var(--accent-rgb), .45);
+}
+
+/* Buttons drift a few px toward the cursor (JS writes --bx / --by). */
+.btn[data-magnetic] {
+  --bx: 0px;
+  --by: 0px;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(var(--bx), var(--by), 0);
+  transition: transform .35s var(--ease), background-color var(--t), border-color var(--t), color var(--t), box-shadow var(--t);
+}
+
+.btn[data-magnetic].is-magnet {
+  transition: transform .08s linear, background-color var(--t), border-color var(--t);
+}
+
+/* A light sweep that crosses the button on hover. */
+.btn[data-magnetic]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -140%;
+  width: 60%;
+  height: 100%;
+  transform: skewX(-20deg);
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .28), transparent);
+}
+
+.btn[data-magnetic]:hover::after {
+  animation: sweep .75s var(--ease);
+}
+
+@keyframes sweep {
+  to { left: 140%; }
+}
+
+
+/* ── 30.6  Cross-page transitions ───────────────────────────────────────────
+   Chrome/Edge cross-fade between navigations. Every other browser ignores
+   the block entirely — no fallback needed, nothing breaks.
+   ------------------------------------------------------------------------- */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out .16s var(--ease) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in .34s var(--ease) both;
+}
+
+@keyframes vt-out {
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* The header and promo bar keep their own identity across the fade so they
+   stay put instead of cross-fading with the page body. */
+.hdr {
+  view-transition-name: site-header;
+}
+
+.promo {
+  view-transition-name: site-promo;
+}
+
+
+/* ── 30.7  Reduced motion ───────────────────────────────────────────────────
+   Everything in this section degrades to "visible and still".
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+  [data-anim][data-anim],
+  [data-anim][data-anim]:not(.is-in) {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    clip-path: none;
+    transition: none;
+  }
+
+  .tilt,
+  .tilt:hover {
+    transform: none;
+  }
+
+  .tilt__glare,
+  .tilt::after,
+  .hero__spot {
+    display: none;
+  }
+
+  .hero__mesh,
+  .hero__grain,
+  .rail__track {
+    animation: none;
+  }
+
+  .hero__grain {
+    display: none;
+  }
+
+  .btn[data-magnetic] {
+    transform: none;
+  }
+
+  .btn[data-magnetic]:hover::after {
+    animation: none;
+  }
+
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Touch / coarse pointers never get tilt, spotlight or magnetism. */
+@media (hover: none), (pointer: coarse) {
+
+  .tilt,
+  .tilt:hover {
+    transform: translate3d(0, var(--lift), 0);
+  }
+
+  .tilt__glare,
+  .tilt::after {
+    display: none;
+  }
+
+  .btn[data-magnetic] {
+    transform: none;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   31. IMAGERY
+   --------------------------------------------------------------------------
+   Every image slot works with no image: leave the URL empty and the CSS
+   draws its own artwork instead, so the store never shows a broken frame.
+
+   31.1  .shot      — the image frame everything else is built from
+   31.2  .hero__art — hero product shot + floating chips
+   31.3  .cat       — image-backed category tiles
+   31.4  .gal       — screenshot gallery rail
+   31.5  .lb        — click-to-zoom lightbox
+   31.6  parallax + lazy shimmer
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 31.1  Image frame ──────────────────────────────────────────────────────
+   <div class="shot"><img …></div>            real image
+   <div class="shot shot--art"></div>         CSS-drawn placeholder
+   ------------------------------------------------------------------------- */
+
+.shot {
+  position: relative;
+  overflow: hidden;
+  margin: 0;                    /* it is often a <figure> */
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--bg-elev-2);
+  box-shadow: var(--shadow-3);
+  isolation: isolate;
+}
+
+/* Zoom and parallax are both folded into one transform through variables, so
+   hovering a parallaxed image does not cancel its scroll offset. */
+.shot img {
+  --zoom: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(0, var(--py, 0px), 0) scale(var(--zoom));
+  transition: transform .7s var(--ease);
+}
+
+.shot:hover img {
+  --zoom: 1.04;
+}
+
+/* Top sheen — reads as glass over the screenshot. */
+.shot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .07), transparent 30%),
+    linear-gradient(0deg, rgba(0, 0, 0, .45), transparent 45%);
+}
+
+/* Accent rim light. */
+.shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .18);
+  pointer-events: none;
+}
+
+/* Placeholder artwork — used when no image URL is set. Pure CSS, no request. */
+.shot--art {
+  background:
+    radial-gradient(60% 60% at 25% 20%, rgba(var(--accent-rgb), .38), transparent 65%),
+    radial-gradient(50% 50% at 80% 80%, rgba(255, 255, 255, .10), transparent 60%),
+    linear-gradient(150deg, var(--bg-elev-2), var(--bg));
+}
+
+.shot--art::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Optional caption bar pinned to the bottom of a frame. */
+.shot__cap {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.shot__cap i {
+  color: var(--accent);
+}
+
+
+/* ── 31.2  Hero artwork ─────────────────────────────────────────────────── */
+
+.hero__grid {
+  display: grid;
+  gap: 34px;
+  align-items: center;
+}
+
+.hero__art {
+  position: relative;
+}
+
+.hero__art .shot {
+  animation: art-float 9s ease-in-out infinite;
+}
+
+@keyframes art-float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -14px; }
+}
+
+/* Glow puddle under the artwork. */
+.hero__art::after {
+  content: "";
+  position: absolute;
+  right: 8%;
+  bottom: -26px;
+  left: 8%;
+  height: 60px;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(26px);
+  background: rgba(var(--accent-rgb), .30);
+}
+
+/* Small stat chips that sit over the artwork. */
+.hero__chip {
+  position: absolute;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--r-pill);
+  background: rgba(18, 18, 18, .72);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-2);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: art-float 7s ease-in-out infinite;
+}
+
+.hero__chip i {
+  color: var(--accent);
+}
+
+.hero__chip--a { top: 12%;  left: -14px; animation-duration: 6.2s; }
+.hero__chip--b { right: -10px; bottom: 22%; animation-duration: 7.8s; animation-delay: .5s; }
+
+
+/* ── 31.3  Category tiles ───────────────────────────────────────────────── */
+
+.cats {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1fr;
+}
+
+.cat {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-elev-2);
+  color: inherit;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.cat__img {
+  --zoom: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  transform: translate3d(0, var(--py, 0px), 0) scale(var(--zoom));
+  transition: transform .8s var(--ease), filter var(--t);
+}
+
+/* Same CSS artwork as .shot--art, hue-shifted per tile by the JS. */
+.cat__img--art {
+  background:
+    radial-gradient(55% 55% at 30% 25%, rgba(var(--accent-rgb), .40), transparent 62%),
+    radial-gradient(45% 45% at 78% 72%, rgba(255, 255, 255, .10), transparent 60%),
+    linear-gradient(145deg, var(--bg-elev-2), var(--bg));
+}
+
+.cat:hover .cat__img {
+  --zoom: 1.07;
+}
+
+.cat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(0deg, rgba(0, 0, 0, .82), rgba(0, 0, 0, .18) 55%, transparent);
+  transition: opacity var(--t);
+}
+
+.cat__body {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px;
+}
+
+.cat__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.cat__meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--faint);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.cat__go {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border-hover);
+  border-radius: 50%;
+  background: rgba(18, 18, 18, .6);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  color: var(--text);
+  transition: background-color var(--t), border-color var(--t), transform var(--t) var(--ease);
+}
+
+.cat:hover .cat__go {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  transform: translateX(3px);
+}
+
+.cat:hover {
+  border-color: var(--border-accent);
+}
+
+
+/* ── 31.4  Screenshot gallery ───────────────────────────────────────────── */
+
+.gal {
+  position: relative;
+}
+
+.gal__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, 86%);
+  gap: var(--gap);
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.gal__track::-webkit-scrollbar {
+  display: none;
+}
+
+.gal__track > * {
+  scroll-snap-align: start;
+}
+
+/* The zoom cursor is set by the JS, and only on frames that hold a real
+   image — a drawn placeholder has nothing to open. */
+
+.gal__nav {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.gal__btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg-elev);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color var(--t), background-color var(--t), transform var(--t) var(--ease);
+}
+
+.gal__btn:hover {
+  border-color: var(--accent);
+  background: var(--bg-elev-2);
+  transform: translateY(-2px);
+}

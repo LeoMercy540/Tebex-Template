@@ -24,7 +24,13 @@
   <!-- Tebex.js — required for <tebex-checkout>. Do not remove. -->
   <script defer src="https://js.tebex.io/v/1.js"></script>
 
+  {# The stylesheet is split across several files: an inlined include that runs
+     past roughly 40 KB gets cut off mid-rule, which silently drops every rule
+     after it. Keep each part well under that and add a new one if it grows. #}
   <style>{% include "style.css" %}</style>
+  <style>{% include "style2.css" %}</style>
+  <style>{% include "style3.css" %}</style>
+  <style>{% include "style4.css" %}</style>
 
 </head>
 

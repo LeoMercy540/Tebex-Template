@@ -18,7 +18,7 @@
    artwork instead, so nothing ever looks broken. Upload your screenshots
    under Appearance → Assets and paste the URL, or use any direct link.
    -------------------------------------------------------------------- #}
-{% set HERO_IMAGE     = "/graphics/Car%20product%20(with%20bg).png" %}
+{% set HERO_IMAGE     = asset("Car product (with bg).png") %}
 {% set HERO_CAPTION   = "See it running in-game" %}
 {% set HERO_CHIP_1    = "0.02ms idle" %}
 {% set HERO_CHIP_2    = "4.9/5 from 800+ buyers" %}
@@ -26,18 +26,18 @@
 {# One art URL per category, in the order they appear in your dashboard.
    Short lists are fine — missing entries fall back to the drawn artwork. #}
 {% set CATEGORY_ART = [
-  "/graphics/Hero%20(no%20bg).png",
-  "/graphics/2%20characters%20(no%20bg).png",
-  "/graphics/one%20man%20(vertical%20image).png",
+  asset("Hero (no bg).png"),
+  asset("2 characters (no bg).png"),
+  asset("one man (vertical image).png"),
   "", "", ""
 ] %}
 
 {# The screenshot gallery. Set SHOWCASE = [] to remove the section. #}
 {% set SHOWCASE = [
-  { "img": "/graphics/Car%20product%20(with%20bg).png",       "cap": "Clean, configurable UI" },
-  { "img": "/graphics/one%20man%20(horizontal%20image).png",  "cap": "Built-in admin tools" },
-  { "img": "/graphics/2%20characters%20(no%20bg).png",        "cap": "Works with ESX and QBCore" },
-  { "img": "/graphics/Hero%20(no%20bg).png",                  "cap": "Every string is translatable" }
+  { "img": asset("Car product (with bg).png"),      "cap": "Clean, configurable UI" },
+  { "img": asset("one man (horizontal image).png"), "cap": "Built-in admin tools" },
+  { "img": asset("2 characters (no bg).png"),       "cap": "Works with ESX and QBCore" },
+  { "img": asset("Hero (no bg).png"),               "cap": "Every string is translatable" }
 ] %}
 
 {% set STATS = [
