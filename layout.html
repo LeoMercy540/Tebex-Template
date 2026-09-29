@@ -4,7 +4,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#121212">
+  <meta name="theme-color" content="#08090a">
 
   <title>{{ store.name }} | {{ __(page.title) }}</title>
   <meta name="title" content="{{ store.name }}">
@@ -18,7 +18,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
 
   <!-- Tebex.js — required for <tebex-checkout>. Do not remove. -->
@@ -31,6 +31,8 @@
   <style>{% include "style2.css" %}</style>
   <style>{% include "style3.css" %}</style>
   <style>{% include "style4.css" %}</style>
+  <style>{% include "style5.css" %}</style>
+  <style>{% include "style6.css" %}</style>
 
 </head>
 
@@ -38,57 +40,25 @@
 
 <div class="site-bg" aria-hidden="true"></div>
 
-{# ═══════════════════════════════════════════════════════════════════════
-   EDIT ME — PROMO BAR
-   Set PROMO_ON to false to hide the bar completely.
-   data-until accepts any ISO date, e.g. "2026-12-31T23:59:59Z".
-   ═══════════════════════════════════════════════════════════════════════ #}
-{% set PROMO_ON    = true %}
-{% set PROMO_TITLE = "Launch Sale" %}
-{% set PROMO_TEXT  = "30% off every script in the store" %}
-{% set PROMO_CODE  = "SAVE30" %}
-{% set PROMO_UNTIL = "2026-12-31T23:59:59Z" %}
+<header class="w-hdr" id="hdr">
+  <div class="shell w-hdr__inner">
 
-{% if PROMO_ON %}
-<div class="promo" id="promo">
-  <div class="shell promo__inner">
-    <span class="promo__tag">{{ PROMO_TITLE }}</span>
-    <span class="promo__text">{{ PROMO_TEXT }}</span>
-
-    <button type="button" class="promo__code" id="promo-copy" data-code="{{ PROMO_CODE }}" title="{{ __("Copy code") }}">
-      <i class="fa-regular fa-copy"></i>
-      <span>{{ PROMO_CODE }}</span>
-    </button>
-
-    <div class="promo__timer" data-until="{{ PROMO_UNTIL }}">
-      <span class="promo__num" data-unit="d">00</span><span class="promo__sep">:</span>
-      <span class="promo__num" data-unit="h">00</span><span class="promo__sep">:</span>
-      <span class="promo__num" data-unit="m">00</span><span class="promo__sep">:</span>
-      <span class="promo__num" data-unit="s">00</span>
-    </div>
-
-    <button type="button" class="promo__close" id="promo-close" aria-label="{{ __("Dismiss") }}">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-</div>
-{% endif %}
-
-<header class="hdr" id="hdr">
-  <div class="shell hdr__inner">
-
-    <a class="brand" href="/">
-      <img class="brand__img" src="{{ store.logo }}" alt="{{ store.name }}">
+    <a class="w-brand" href="/">
+      {% if store.logo %}<img class="w-brand__img" src="{{ store.logo }}" alt="{{ store.name }}">{% endif %}
+      <span>
+        <span class="w-brand__name">{{ store.name }}</span>
+        <span class="w-brand__sub">{{ __("powered by tebex") }}</span>
+      </span>
     </a>
 
-    <nav class="nav" aria-label="{{ __("Main") }}">
-      <a class="nav__link {% if page.category == "index" %}is-active{% endif %}" href="/">{{ __("Home") }}</a>
+    <nav class="w-nav" aria-label="{{ __("Main") }}">
+      <a class="w-nav__link {% if page.category == "index" %}is-active{% endif %}" href="/">{{ __("Home") }}</a>
 
       {% for category in store.categories %}
         {% if category.subcategories|length > 0 %}
           <div class="dd">
-            <button type="button" class="nav__link dd__toggle {% if category.active %}is-active{% endif %}">
-              {{ category.name }} <i class="fa-solid fa-chevron-down"></i>
+            <button type="button" class="w-nav__link dd__toggle {% if category.active %}is-active{% endif %}">
+              {{ category.name }} <i class="fa-solid fa-chevron-down" style="font-size:8px"></i>
             </button>
             <div class="dd__menu">
               {% for subcategory in category.subcategories %}
@@ -97,22 +67,20 @@
             </div>
           </div>
         {% else %}
-          <a class="nav__link {% if category.active %}is-active{% endif %}" href="/category/{{ category.id }}">{{ category.name }}</a>
+          <a class="w-nav__link {% if category.active %}is-active{% endif %}" href="/category/{{ category.id }}">{{ category.name }}</a>
         {% endif %}
       {% endfor %}
 
       {% for p in store.pages %}
-        <a class="nav__link {% if p.active %}is-active{% endif %}" href="/{{ p.slug }}">{{ p.title }}</a>
+        <a class="w-nav__link {% if p.active %}is-active{% endif %}" href="/{{ p.slug }}">{{ p.title }}</a>
       {% endfor %}
     </nav>
 
-    <div class="hdr__actions">
+    <div class="w-hdr__actions">
 
-      <div id="donator-slot" class="donor-slot"></div>
-
-      <div class="dd dd--right lang">
-        <button type="button" class="iconbtn dd__toggle" title="{{ __("Language") }}">
-          <i class="fa-solid fa-globe"></i>
+      <div class="dd dd--right">
+        <button type="button" class="w-cur dd__toggle" title="{{ __("Language") }}">
+          {{ basket.currency }} <i class="fa-solid fa-caret-down"></i>
         </button>
         <div class="dd__menu">
           {% for locale, name in store.locales %}
@@ -123,22 +91,17 @@
         </div>
       </div>
 
-      <button type="button" class="cartbtn" id="cart-open">
+      <button type="button" class="w-cart" id="cart-open" aria-label="{{ __("Cart") }}">
         <i class="fa-solid fa-cart-shopping"></i>
-        <span class="cartbtn__label">{{ __("Cart") }}</span>
         {% if basket.packages|length > 0 %}
-          <span class="cartbtn__qty">{{ basket.packages|length }}</span>
+          <span class="w-cart__qty">{{ basket.packages|length }}</span>
         {% endif %}
       </button>
 
       {% if basket.username %}
-        <a class="btn btn--ghost btn--sm hdr__auth" href="/checkout/logout">
-          <i class="fa-solid fa-right-from-bracket"></i> {{ __("Logout") }}
-        </a>
+        <a class="w-btn w-btn--acc w-login" href="/checkout/logout">{{ __("Logout") }}</a>
       {% else %}
-        <a class="btn btn--ghost btn--sm hdr__auth" href="/login">
-          <i class="fa-solid fa-user"></i> {{ __("Login") }}
-        </a>
+        <a class="w-btn w-btn--acc w-login" href="/login">{{ __("Login") }}</a>
       {% endif %}
 
       <button type="button" class="burger" id="nav-open" aria-label="{{ __("Menu") }}">
@@ -166,57 +129,76 @@
 
 {# ═══════════════════════════════════════════════════════════════════════
    EDIT ME — FOOTER
-   Replace the href="#" values with your real links.
+   Replace the "#" links with your real ones. Set any to "" to hide it.
    ═══════════════════════════════════════════════════════════════════════ #}
-<footer class="ftr">
-  <div class="shell">
-    <div class="ftr__grid">
+{% set FOOT_NOTE     = "We are not affiliated with Rockstar Games or any other company." %}
+{% set URL_DISCORD   = "#" %}
+{% set URL_YOUTUBE   = "#" %}
+{% set URL_DOCS      = "#" %}
+{% set URL_IMPRINT   = "#" %}
+{% set URL_TERMS     = "#" %}
+{% set URL_PRIVACY   = "#" %}
+{% set DESIGNED_BY   = "" %}
 
-      <div class="ftr__brand">
-        <img src="{{ store.logo }}" alt="{{ store.name }}">
-        <p>{{ __("Premium FiveM scripts built for performance, backed by real support and lifetime updates.") }}</p>
-        <div class="ftr__social">
-          <a href="#" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+<footer class="w-ftr">
+  <div class="shell">
+    <div class="w-ftr__grid">
+
+      <div class="w-ftr__brand">
+        <a class="w-brand" href="/">
+          {% if store.logo %}<img class="w-brand__img" src="{{ store.logo }}" alt="{{ store.name }}">{% endif %}
+          <span>
+            <span class="w-brand__name">{{ store.name }}</span>
+            <span class="w-brand__sub">{{ __("Powered By Tebex") }}</span>
+          </span>
+        </a>
+        <p class="w-ftr__note">{{ __(FOOT_NOTE) }}</p>
+        <div class="w-social">
+          {% if URL_DISCORD %}<a href="{{ URL_DISCORD }}" target="_blank" rel="noopener" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>{% endif %}
+          {% if URL_YOUTUBE %}<a href="{{ URL_YOUTUBE }}" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>{% endif %}
+          {% if URL_DOCS %}<a href="{{ URL_DOCS }}" target="_blank" rel="noopener" aria-label="Docs"><i class="fa-solid fa-book"></i></a>{% endif %}
         </div>
       </div>
 
-      <div class="ftr__col">
-        <h4 class="ftr__head">{{ __("Store") }}</h4>
-        <ul class="ftr__links">
+      <div>
+        <h4 class="w-ftr__head"><i class="fa-solid fa-arrow-right"></i> {{ __("Quick links") }}</h4>
+        <ul class="w-ftr__links">
+          {% if URL_YOUTUBE %}<li><a href="{{ URL_YOUTUBE }}" target="_blank" rel="noopener">Youtube</a></li>{% endif %}
+          {% if URL_DISCORD %}<li><a href="{{ URL_DISCORD }}" target="_blank" rel="noopener">Discord</a></li>{% endif %}
+          {% if URL_DOCS %}<li><a href="{{ URL_DOCS }}" target="_blank" rel="noopener">Docs</a></li>{% endif %}
           <li><a href="/">{{ __("Home") }}</a></li>
-          {% for category in store.categories %}
-            <li><a href="/category/{{ category.id }}">{{ category.name }}</a></li>
-          {% endfor %}
         </ul>
       </div>
 
-      <div class="ftr__col">
-        <h4 class="ftr__head">{{ __("Information") }}</h4>
-        <ul class="ftr__links">
-          {% for p in store.pages %}
-            <li><a href="/{{ p.slug }}">{{ p.title }}</a></li>
-          {% endfor %}
-          <li><a href="/checkout/basket">{{ __("Your basket") }}</a></li>
+      <div>
+        <h4 class="w-ftr__head"><i class="fa-solid fa-arrow-right"></i> {{ __("Contact us") }}</h4>
+        <ul class="w-ftr__links">
+          {% if URL_DISCORD %}<li><a href="{{ URL_DISCORD }}" target="_blank" rel="noopener">Discord</a></li>{% endif %}
+          <li><a href="/">{{ __("Store home") }}</a></li>
         </ul>
+        <div class="w-ftr__help">{{ __("Got questions? We're here 24/7 to help you out.") }}</div>
       </div>
 
-      <div class="ftr__col">
-        <h4 class="ftr__head">{{ __("Support") }}</h4>
-        <ul class="ftr__links">
-          <li><a href="#">{{ __("Discord server") }}</a></li>
-          <li><a href="#">{{ __("Documentation") }}</a></li>
-          <li><a href="#">{{ __("Open a ticket") }}</a></li>
-        </ul>
+      <div>
+        <h4 class="w-ftr__head"><i class="fa-solid fa-arrow-right"></i> {{ __("Legal stuff") }}</h4>
+        <span class="w-ftr__dmca">DMCA</span>
+        <p class="w-ftr__dmcatext">{{ __("protected & secured by DMCA") }} <i class="fa-solid fa-lock"></i></p>
       </div>
 
     </div>
 
-    <div class="ftr__legal">
-      <p>&copy; {{ "now"|date("Y") }} <strong>{{ store.name }}</strong>. {{ __("All rights reserved.") }}</p>
-      <p>{{ __("We are not affiliated with any real world brand. Payments are processed securely by Tebex.") }}</p>
+    <div class="w-ftr__bar">
+      <span>&copy; {{ "now"|date("Y") }} {{ store.name }} | {{ __("All rights reserved") }}</span>
+      {% if DESIGNED_BY %}<span>{{ __("designed by") }} <b>{{ DESIGNED_BY }}</b></span>{% endif %}
+    </div>
+
+    <div class="w-tebex">
+      <span><b>tebex</b> &nbsp; {{ __("This website and its checkout process is owned & operated by Tebex Limited, who handle product fulfilment, billing support and refunds.") }}</span>
+      <span>
+        <a href="{{ URL_IMPRINT }}">Impressum</a>
+        <a href="{{ URL_TERMS }}">Terms &amp; Conditions</a>
+        <a href="{{ URL_PRIVACY }}">Privacy Policy</a>
+      </span>
     </div>
   </div>
 </footer>
@@ -307,15 +289,19 @@
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
-  /* ── Tebex modules are printed into a hidden stage by index/package templates.
-        Move each one into its slot if that slot exists on this page. ───────── */
+  /* ── Tebex modules are printed into a hidden stage by the index/package
+        templates. Move each one into its slot if that slot exists here. ───── */
   function mountModules() {
     [['.featured-module', '#featured-slot'],
-     ['.payments-module', '#payments-slot'],
-     ['.donator-module',  '#donator-slot']].forEach(function (pair) {
+     ['.payments-module', '#payments-slot']].forEach(function (pair) {
       var slot = $(pair[1]);
       if (!slot) return;
       $$(pair[0]).forEach(function (node) { slot.appendChild(node); });
+    });
+    /* Hide a section whose module printed nothing (e.g. featured disabled). */
+    $$('[data-needs]').forEach(function (sec) {
+      var slot = $(sec.getAttribute('data-needs'));
+      if (slot && !slot.children.length) sec.hidden = true;
     });
   }
 
@@ -368,90 +354,7 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
   }
 
-  /* ── Sticky header state ───────────────────────────────────────────────── */
-  function initHeader() {
-    var hdr = $('#hdr');
-    if (!hdr) return;
-    var onScroll = function () { hdr.classList.toggle('is-stuck', window.scrollY > 8); };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  /* ── Toast ─────────────────────────────────────────────────────────────── */
-  var toastTimer;
-  function toast(msg) {
-    var t = $('#toast');
-    if (!t) return;
-    $('span', t).textContent = msg;
-    t.classList.add('is-open');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.classList.remove('is-open'); }, 2200);
-  }
-
-  /* ── Promo bar: dismiss + copy + countdown ─────────────────────────────── */
-  function initPromo() {
-    var promo = $('#promo');
-    if (!promo) return;
-
-    if (sessionStorage.getItem('promo-dismissed') === '1') {
-      promo.remove();
-      return;
-    }
-
-    var close = $('#promo-close');
-    if (close) close.addEventListener('click', function () {
-      sessionStorage.setItem('promo-dismissed', '1');
-      promo.remove();
-    });
-
-    var copy = $('#promo-copy');
-    if (copy) copy.addEventListener('click', function () {
-      var code = copy.getAttribute('data-code');
-      var done = function () { toast(code + ' copied to clipboard'); };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(done, done);
-      } else {
-        var i = document.createElement('input');
-        i.value = code;
-        document.body.appendChild(i);
-        i.select();
-        try { document.execCommand('copy'); } catch (err) {}
-        document.body.removeChild(i);
-        done();
-      }
-    });
-
-    startCountdown($('.promo__timer', promo));
-  }
-
-  /* ── Countdown (promo bar + any [data-countdown] package timer) ─────────── */
-  function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-  function startCountdown(el) {
-    if (!el) return;
-    var end = Date.parse(el.getAttribute('data-until'));
-    if (isNaN(end)) { el.style.display = 'none'; return; }
-
-    var units = {
-      d: $('[data-unit="d"]', el), h: $('[data-unit="h"]', el),
-      m: $('[data-unit="m"]', el), s: $('[data-unit="s"]', el)
-    };
-
-    var tick = function () {
-      var left = end - Date.now();
-      if (left <= 0) { el.style.display = 'none'; clearInterval(id); return; }
-      var s = Math.floor(left / 1000);
-      if (units.d) units.d.textContent = pad(Math.floor(s / 86400));
-      if (units.h) units.h.textContent = pad(Math.floor(s / 3600) % 24);
-      if (units.m) units.m.textContent = pad(Math.floor(s / 60) % 60);
-      if (units.s) units.s.textContent = pad(s % 60);
-    };
-
-    tick();
-    var id = setInterval(tick, 1000);
-  }
-
-  /* Package "ending soon" timers rendered by Tebex as [data-countdown]. */
+  /* ── Package "ending soon" timers rendered by Tebex as [data-countdown]. ── */
   function initPackageTimers() {
     var nodes = $$('[data-countdown]');
     if (!nodes.length) return;
@@ -459,688 +362,139 @@
     var render = function () {
       nodes.forEach(function (n) {
         var end = Date.parse(n.getAttribute('data-countdown'));
-        if (isNaN(end)) return;
+        if (isNaN(end)) { n.textContent = n.getAttribute('data-expired') || ''; return; }
         var left = end - Date.now();
-        if (left <= 0) { n.textContent = n.getAttribute('data-expired') || 'Ended'; return; }
+        if (left <= 0) { n.textContent = n.getAttribute('data-expired') || ''; return; }
         var s = Math.floor(left / 1000);
         var d = Math.floor(s / 86400);
-        n.textContent = d > 0
-          ? d + 'd ' + pad(Math.floor(s / 3600) % 24) + 'h'
-          : pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+        var h = Math.floor(s / 3600) % 24;
+        var m = Math.floor(s / 60) % 60;
+        n.textContent = (d ? d + 'd ' : '') + h + 'h ' + m + 'm ' + (s % 60) + 's';
       });
     };
-
     render();
     setInterval(render, 1000);
   }
 
   /* ── FAQ accordion ─────────────────────────────────────────────────────── */
   function initFaq() {
-    $$('.qa__q').forEach(function (q) {
+    $$('.w-qa__q').forEach(function (q) {
       q.addEventListener('click', function () {
-        var qa = q.closest('.qa');
-        var open = qa.classList.contains('is-open');
-        $$('.qa.is-open').forEach(function (o) {
-          o.classList.remove('is-open');
-          $('.qa__a', o).style.maxHeight = null;
-        });
-        if (!open) {
-          qa.classList.add('is-open');
-          var a = $('.qa__a', qa);
-          a.style.maxHeight = a.scrollHeight + 'px';
-        }
+        var qa = q.closest('.w-qa');
+        var a  = $('.w-qa__a', qa);
+        var opening = !qa.classList.contains('is-open');
+        qa.classList.toggle('is-open', opening);
+        a.style.maxHeight = opening ? a.scrollHeight + 'px' : null;
       });
     });
   }
 
-  /* ── Reviews carousel (scroll-snap, no library) ────────────────────────── */
-  function initCarousels() {
-    $$('.revs').forEach(function (revs) {
-      var track = $('.revs__track', revs);
-      if (!track) return;
-      var step = function () {
-        var card = $('.rev', track);
-        return card ? card.offsetWidth + 20 : track.clientWidth * 0.8;
-      };
-      var prev = $('.revs__btn--prev', revs);
-      var next = $('.revs__btn--next', revs);
-      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
-      if (next) next.addEventListener('click', function () { track.scrollBy({ left:  step(), behavior: 'smooth' }); });
-    });
-  }
-
-  /* ── Category search + sort (client-side, over rendered cards) ──────────── */
+  /* ── Category catalog: search, filter and sort ─────────────────────────── */
   function initCatalog() {
-    var root = $('#catalog');
-    if (!root) return;
-
-    var grid   = $('.js-catalog-grid', root);
-    var search = $('#catalog-search');
-    var sort   = $('#catalog-sort');
-    var count  = $('#catalog-count');
-    var empty  = $('#catalog-empty');
+    var grid = $('.js-catalog-grid');
     if (!grid) return;
 
-    var items   = $$('.js-item', grid);
-    var filters = $$('.js-filter', root);
-    var tag     = '';
+    var search = $('#catalog-search');
+    var filter = $('#catalog-filter');
+    var count  = $('#catalog-count');
+    var empty  = $('#catalog-empty');
+    var items  = $$('.js-item', grid);
 
     var apply = function () {
-      var q = (search && search.value || '').trim().toLowerCase();
+      var q   = search ? search.value.trim().toLowerCase() : '';
+      var tag = filter ? filter.value : '';
       var shown = 0;
 
       items.forEach(function (it) {
-        var hay  = it.getAttribute('data-search') || it.getAttribute('data-name') || '';
-        var tags = ' ' + (it.getAttribute('data-tags') || '') + ' ';
-        var hit  = (!q || hay.indexOf(q) > -1) &&
-                   (!tag || tags.indexOf(' ' + tag + ' ') > -1);
-        it.hidden = !hit;
-        if (hit) shown++;
+        var okQ = !q || (it.getAttribute('data-search') || '').indexOf(q) !== -1;
+        var okT = !tag || (' ' + it.getAttribute('data-tags') + ' ').indexOf(' ' + tag + ' ') !== -1;
+        var ok  = okQ && okT;
+        it.hidden = !ok;
+        if (ok) shown++;
       });
 
-      var mode = sort ? sort.value : 'default';
-      if (mode !== 'default') {
-        items.slice().sort(function (a, b) {
-          var an = a.getAttribute('data-name') || '';
-          var bn = b.getAttribute('data-name') || '';
-          var ap = parseFloat(a.getAttribute('data-price')) || 0;
-          var bp = parseFloat(b.getAttribute('data-price')) || 0;
-          if (mode === 'price-asc')  return ap - bp;
-          if (mode === 'price-desc') return bp - ap;
-          if (mode === 'name-asc')   return an.localeCompare(bn);
-          if (mode === 'name-desc')  return bn.localeCompare(an);
-          return 0;
-        }).forEach(function (n) { grid.appendChild(n); });
-      } else {
-        items.forEach(function (n) { grid.appendChild(n); });
-      }
-
-      if (count) count.textContent = shown + (shown === 1 ? ' result' : ' results');
+      if (count) count.textContent = shown + ' / ' + items.length;
       if (empty) empty.hidden = shown !== 0;
     };
 
-    filters.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        tag = btn.getAttribute('data-filter') || '';
-        filters.forEach(function (b) { b.classList.toggle('is-on', b === btn); });
-        apply();
-      });
-    });
-
     if (search) search.addEventListener('input', apply);
-    if (sort)   sort.addEventListener('change', apply);
+    if (filter) filter.addEventListener('change', apply);
     apply();
   }
 
-  /* ── Reveal on scroll ──────────────────────────────────────────────────── */
-  function initReveal() {
-    var nodes = $$('.reveal');
-    if (!nodes.length) return;
+  /* ── Product page: thumbnail gallery ───────────────────────────────────── */
+  function initGallery() {
+    var main = $('#gal-main');
+    if (!main) return;
 
-    if (!('IntersectionObserver' in window) ||
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      nodes.forEach(function (n) { n.classList.add('is-in'); });
-      return;
-    }
+    var shots = [];
+    var first = $('img', main);
+    if (first) shots.push(first.getAttribute('src'));
+
+    $$('.prose img').forEach(function (img) {
+      var src = img.getAttribute('src');
+      if (src && shots.indexOf(src) === -1) shots.push(src);
+    });
+
+    var thumbs = $('#gal-thumbs');
+    if (!thumbs || shots.length < 2) return;
+
+    shots.forEach(function (src, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'w-gal__thumb' + (i === 0 ? ' is-on' : '');
+      b.innerHTML = '<img alt="" loading="lazy">';
+      $('img', b).src = src;
+      b.addEventListener('click', function () {
+        var img = $('img', main);
+        if (!img) { img = document.createElement('img'); img.alt = ''; main.appendChild(img); }
+        img.src = src;
+        $$('.w-gal__thumb', thumbs).forEach(function (t) { t.classList.toggle('is-on', t === b); });
+      });
+      thumbs.appendChild(b);
+    });
+  }
+
+  /* ── Stats: count up when scrolled into view ───────────────────────────── */
+  function initCountUp() {
+    var nodes = $$('[data-countup]');
+    if (!nodes.length || !('IntersectionObserver' in window)) return;
+
+    var run = function (el) {
+      var to = parseInt(el.getAttribute('data-countup'), 10);
+      if (isNaN(to)) return;
+      var t0 = null, dur = 1200;
+      var step = function (ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US');
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        run(e.target);
       });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-
+    }, { threshold: .4 });
     nodes.forEach(function (n) { io.observe(n); });
   }
 
-  /* ── Dismissable notification ──────────────────────────────────────────── */
+  /* ── Flash message close ───────────────────────────────────────────────── */
   function initNote() {
     $$('.note__close').forEach(function (b) {
       b.addEventListener('click', function () { b.closest('.note').remove(); });
     });
   }
 
-
-  /* ════════════════════════════════════════════════════════════════════════
-     MOTION LAYER
-     ------------------------------------------------------------------------
-     Six independent enhancements. Each bails out on its own if the page has
-     nothing to animate, if the visitor asked for reduced motion, or — for
-     the pointer-driven ones — if this is a touch device. Deleting any one
-     function and its call below removes only that effect.
-     ════════════════════════════════════════════════════════════════════════ */
-
-  var mq       = function (q) { return window.matchMedia && window.matchMedia(q).matches; };
-  var REDUCED  = mq('(prefers-reduced-motion: reduce)');
-  var POINTER  = mq('(hover: hover) and (pointer: fine)');
-  var raf      = window.requestAnimationFrame
-                 ? window.requestAnimationFrame.bind(window)
-                 : function (fn) { return setTimeout(fn, 16); };
-
-  /* Runs `fn` at most once per frame with the latest pointer event. */
-  function throttled(fn) {
-    var id = 0;
-    return function (e) {
-      if (id) return;
-      id = raf(function () { id = 0; fn(e); });
-    };
-  }
-
-  /* ── 1. data-anim reveals ───────────────────────────────────────────────
-        <div data-anim="fade-up">                     single element
-        <div data-anim="blur-in" data-anim-delay="2"> starts 2 steps later
-        <div data-anim-stagger="scale-in">            every child, in sequence
-     ---------------------------------------------------------------------- */
-  function initAnim() {
-    /* [data-anim] starts at opacity 0, so if anything in here throws the page
-       would be blank. Reveal everything rather than hide the store. */
-    try {
-      setupAnim();
-    } catch (err) {
-      $$('[data-anim]').forEach(function (n) { n.classList.add('is-in'); });
-    }
-  }
-
-  function setupAnim() {
-    /* A display:contents wrapper (Tebex's .featured-module) generates no box,
-       so animating it does nothing — step through it to the real cards. */
-    var animatable = function (el) {
-      var out = [];
-      $$(':scope > *', el).forEach(function (child) {
-        var display = window.getComputedStyle
-          ? window.getComputedStyle(child).display
-          : '';
-        if (display === 'contents') out = out.concat(animatable(child));
-        else out.push(child);
-      });
-      return out;
-    };
-
-    $$('[data-anim-stagger]').forEach(function (box) {
-      var kind = box.getAttribute('data-anim-stagger') || 'fade-up';
-      animatable(box).forEach(function (child, i) {
-        if (!child.hasAttribute('data-anim')) child.setAttribute('data-anim', kind);
-        /* Capped so a 60-package grid does not end up with a 4-second delay
-           on its last card — each card animates on its own scroll-in anyway. */
-        if (!child.hasAttribute('data-anim-delay')) {
-          child.style.setProperty('--anim-i', Math.min(i, 6));
-        }
-      });
-    });
-
-    var nodes = $$('[data-anim]');
-    if (!nodes.length) return;
-
-    nodes.forEach(function (n) {
-      var d = n.getAttribute('data-anim-delay');
-      if (d) n.style.setProperty('--anim-i', d);
-    });
-
-    if (REDUCED || !('IntersectionObserver' in window)) {
-      nodes.forEach(function (n) { n.classList.add('is-in'); });
-      return;
-    }
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('is-in');
-        io.unobserve(e.target);
-      });
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
-
-    nodes.forEach(function (n) { io.observe(n); });
-  }
-
-  /* ── 2. Pointer-tracked tilt + glare on cards ──────────────────────────── */
-  function initTilt() {
-    if (REDUCED || !POINTER) return;
-
-    $$('.pk, .feat, .stat, [data-tilt]').forEach(function (card) {
-      if (card.classList.contains('tilt')) return;
-      card.classList.add('tilt');
-
-      var glare = document.createElement('span');
-      glare.className = 'tilt__glare';
-      glare.setAttribute('aria-hidden', 'true');
-      card.appendChild(glare);
-
-      /* Small tiles tilt less than big ones or the effect looks seasick. */
-      var max = card.classList.contains('stat') ? 5 : 8;
-
-      card.addEventListener('pointermove', throttled(function (e) {
-        var r  = card.getBoundingClientRect();
-        if (!r.width || !r.height) return;
-        var px = (e.clientX - r.left) / r.width;
-        var py = (e.clientY - r.top) / r.height;
-        card.style.setProperty('--mx', (px * 100).toFixed(2) + '%');
-        card.style.setProperty('--my', (py * 100).toFixed(2) + '%');
-        card.style.setProperty('--ry', ((px - 0.5) * max * 2).toFixed(2) + 'deg');
-        card.style.setProperty('--rx', ((0.5 - py) * max * 2).toFixed(2) + 'deg');
-      }));
-
-      card.addEventListener('pointerenter', function () {
-        card.classList.add('is-tilting');
-      });
-
-      card.addEventListener('pointerleave', function () {
-        card.classList.remove('is-tilting');
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
-    });
-  }
-
-  /* ── 3. Hero cursor spotlight ──────────────────────────────────────────── */
-  function initHeroFx() {
-    var hero = $('.hero');
-    if (!hero || REDUCED || !POINTER) return;
-
-    hero.addEventListener('pointermove', throttled(function (e) {
-      var r = hero.getBoundingClientRect();
-      hero.style.setProperty('--hx', (((e.clientX - r.left) / r.width) * 100).toFixed(2) + '%');
-      hero.style.setProperty('--hy', (((e.clientY - r.top) / r.height) * 100).toFixed(2) + '%');
-    }));
-
-    hero.addEventListener('pointerenter', function () { hero.classList.add('is-pointing'); });
-    hero.addEventListener('pointerleave', function () { hero.classList.remove('is-pointing'); });
-  }
-
-  /* ── 4. Count-up numbers ────────────────────────────────────────────────
-        <div class="stat__num" data-countup>2,000+</div>
-        Prefixes, suffixes, thousands separators and decimals are all kept —
-        the element's own text is the target, so nothing extra to configure.
-     ---------------------------------------------------------------------- */
-  function initCountUp() {
-    var nodes = $$('[data-countup]');
-    if (!nodes.length) return;
-
-    if (REDUCED || !('IntersectionObserver' in window)) return;
-
-    var group = function (s) {
-      var parts = s.split('.');
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return parts.join('.');
-    };
-
-    var countTo = function (el) {
-      var raw = el.textContent.trim();
-      var m   = raw.match(/^(\D*?)([\d.,]+)([\s\S]*)$/);
-      if (!m) return;
-
-      var plain    = m[2].replace(/,/g, '');
-      var target   = parseFloat(plain);
-      if (isNaN(target)) return;
-
-      var grouped  = m[2].indexOf(',') > -1;
-      var dot      = plain.indexOf('.');
-      var decimals = dot > -1 ? plain.length - dot - 1 : 0;
-      var dur      = 1400;
-      var t0       = 0;
-
-      var step = function (ts) {
-        if (typeof ts !== 'number') ts = Date.now();
-        if (!t0) t0 = ts;
-        var p = Math.min((ts - t0) / dur, 1);
-        var v = target * (1 - Math.pow(1 - p, 3));
-        var s = v.toFixed(decimals);
-        el.textContent = m[1] + (grouped ? group(s) : s) + m[3];
-        if (p < 1) raf(step);
-        else el.textContent = raw;          /* restore the exact original */
-      };
-
-      raf(step);
-    };
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        countTo(e.target);
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.5 });
-
-    nodes.forEach(function (n) { io.observe(n); });
-  }
-
-  /* ── 5. Marquee rails ───────────────────────────────────────────────────
-        The items are duplicated once so the loop is seamless, and the
-        duration is derived from the real width — long rails do not speed up.
-        data-rail-speed is px/second (default 60).
-     ---------------------------------------------------------------------- */
-  function initRails() {
-    $$('[data-rail]').forEach(function (rail) {
-      var track = $('.rail__track', rail);
-      if (!track) return;
-
-      var items = $$('.rail__item', track);
-      if (!items.length) return;
-
-      items.forEach(function (it) {
-        var copy = it.cloneNode(true);
-        copy.setAttribute('aria-hidden', 'true');
-        track.appendChild(copy);
-      });
-
-      var speed = parseFloat(rail.getAttribute('data-rail-speed')) || 60;
-      var dur   = (track.scrollWidth / 2) / speed;
-      track.style.setProperty('--rail-dur', Math.max(dur, 8).toFixed(1) + 's');
-    });
-  }
-
-  /* ── 6. Magnetic buttons ───────────────────────────────────────────────── */
-  function initMagnetic() {
-    if (REDUCED || !POINTER) return;
-
-    $$('[data-magnetic]').forEach(function (btn) {
-      btn.addEventListener('pointermove', throttled(function (e) {
-        var r = btn.getBoundingClientRect();
-        btn.style.setProperty('--bx', ((e.clientX - r.left - r.width  / 2) * 0.18).toFixed(1) + 'px');
-        btn.style.setProperty('--by', ((e.clientY - r.top  - r.height / 2) * 0.28).toFixed(1) + 'px');
-      }));
-
-      btn.addEventListener('pointerenter', function () { btn.classList.add('is-magnet'); });
-
-      btn.addEventListener('pointerleave', function () {
-        btn.classList.remove('is-magnet');
-        btn.style.setProperty('--bx', '0px');
-        btn.style.setProperty('--by', '0px');
-      });
-    });
-  }
-
-  /* ── 7. Click-to-zoom lightbox ─────────────────────────────────────────
-        Wired to .gal__item, to anything marked [data-lightbox], and to every
-        image inside a .prose block — so screenshots in Tebex package
-        descriptions become zoomable without touching the description.
-     ---------------------------------------------------------------------- */
-  function initLightbox() {
-    var sources = $$('.gal__item, [data-lightbox], .prose img');
-    if (!sources.length) return;
-
-    var box = document.createElement('div');
-    box.className = 'lb';
-    box.setAttribute('aria-hidden', 'true');
-    box.innerHTML =
-      '<button type="button" class="lb__close" aria-label="Close">' +
-      '<i class="fa-solid fa-xmark"></i></button><img alt="">';
-    document.body.appendChild(box);
-
-    var img = $('img', box);
-
-    var close = function () {
-      box.classList.remove('is-open');
-      box.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('is-locked');
-    };
-
-    var open = function (src, alt) {
-      if (!src) return;
-      img.src = src;
-      img.alt = alt || '';
-      box.classList.add('is-open');
-      box.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('is-locked');
-    };
-
-    box.addEventListener('click', function (e) {
-      if (e.target === img) return;          /* clicking the photo keeps it open */
-      close();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close();
-    });
-
-    sources.forEach(function (node) {
-      var pic = node.tagName === 'IMG' ? node : $('img', node);
-      if (!pic) return;
-      node.style.cursor = 'zoom-in';
-      node.addEventListener('click', function (e) {
-        e.preventDefault();
-        open(pic.getAttribute('data-full') || pic.currentSrc || pic.src, pic.alt);
-      });
-    });
-  }
-
-  /* ── 8. Scroll parallax on images ──────────────────────────────────────── */
-  function initParallax() {
-    var nodes = $$('[data-parallax]');
-    if (!nodes.length || REDUCED || !('IntersectionObserver' in window)) return;
-
-    var live = [];
-
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var i = live.indexOf(e.target);
-        if (e.isIntersecting && i < 0) live.push(e.target);
-        if (!e.isIntersecting && i > -1) live.splice(i, 1);
-      });
-    }, { rootMargin: '10% 0px' });
-
-    nodes.forEach(function (n) { io.observe(n); });
-
-    var ticking = false;
-
-    var update = function () {
-      ticking = false;
-      var vh = window.innerHeight || document.documentElement.clientHeight;
-      live.forEach(function (n) {
-        var r = n.getBoundingClientRect();
-        /* -1 when the element is just below the fold, +1 when just above. */
-        var progress = ((vh - r.top) / (vh + r.height)) * 2 - 1;
-        var depth = parseFloat(n.getAttribute('data-parallax')) || 24;
-        n.style.setProperty('--py', (progress * depth * -1).toFixed(1) + 'px');
-      });
-    };
-
-    window.addEventListener('scroll', function () {
-      if (ticking) return;
-      ticking = true;
-      raf(update);
-    }, { passive: true });
-
-    window.addEventListener('resize', update, { passive: true });
-    update();
-  }
-
-  /* ── 9. Gallery rails (prev / next over a scroll-snap track) ───────────── */
-  function initGalleries() {
-    $$('.gal').forEach(function (gal) {
-      var track = $('.gal__track', gal);
-      if (!track) return;
-
-      var step = function () {
-        var first = track.firstElementChild;
-        return first ? first.offsetWidth + 20 : track.clientWidth * 0.8;
-      };
-
-      var prev = $('.gal__btn--prev', gal);
-      var next = $('.gal__btn--next', gal);
-
-      if (prev) prev.addEventListener('click', function () {
-        track.scrollBy({ left: -step(), behavior: 'smooth' });
-      });
-
-      if (next) next.addEventListener('click', function () {
-        track.scrollBy({ left: step(), behavior: 'smooth' });
-      });
-    });
-  }
-
-  /* ── 10. Image loading shimmer ─────────────────────────────────────────── */
-  function initImageLoad() {
-    $$('.shot').forEach(function (shot) {
-      var pic = $('img', shot);
-      if (!pic) return;                       /* .shot--art has no image */
-      if (pic.complete && pic.naturalWidth) {
-        shot.classList.add('is-loaded');
-        return;
-      }
-      shot.classList.add('is-lazy');
-      var done = function () { shot.classList.add('is-loaded'); };
-      pic.addEventListener('load', done);
-      pic.addEventListener('error', done);
-    });
-  }
-
-  /* ── 11. Product gallery ───────────────────────────────────────────────
-        Tebex only gives a package one image, so the extra shots are taken
-        from the description: every <img> inside the container named by
-        data-gallery-source becomes a thumbnail. Add data-gallery-hide-source
-        to strip them out of the text once they are in the strip.
-     ---------------------------------------------------------------------- */
-  function initGallery() {
-    var gal = $('[data-gallery]');
-    if (!gal) return;
-
-    var main   = $('.pgal__main', gal);
-    var thumbs = $('.pgal__thumbs', gal);
-    var count  = $('.pgal__count', gal);
-    if (!main || !thumbs) return;
-
-    var hero  = $('img', main);
-    var shots = [];
-
-    if (hero) shots.push({ src: hero.currentSrc || hero.src, alt: hero.alt });
-
-    var sourceSel = gal.getAttribute('data-gallery-source');
-    var hideSrc   = gal.getAttribute('data-gallery-hide-source') === 'true';
-
-    if (sourceSel) {
-      var source = $(sourceSel);
-      if (source) {
-        $$('img', source).forEach(function (img) {
-          var src = img.getAttribute('src');
-          if (!src) return;
-          if (shots.some(function (s) { return s.src === src; })) return;
-          shots.push({ src: src, alt: img.alt || '' });
-          if (hideSrc) {
-            var holder = img.closest('p, figure') || img;
-            holder.remove();
-          }
-        });
-      }
-    }
-
-    if (shots.length < 2) return;              /* one image — no strip needed */
-
-    /* The package may have had no image at all: swap the drawn cover art for
-       a real viewer once we know there are screenshots to show. */
-    if (!hero) {
-      var art = $('.cover', main);
-      hero = document.createElement('img');
-      hero.setAttribute('data-lightbox', '');
-      if (art) main.replaceChild(hero, art);
-      else main.insertBefore(hero, main.firstChild);
-    }
-
-    var show = function (i) {
-      var shot = shots[i];
-      if (!shot) return;
-      hero.src = shot.src;
-      hero.alt = shot.alt;
-      $$('.pgal__thumb', thumbs).forEach(function (t, n) {
-        t.classList.toggle('is-active', n === i);
-      });
-      if (count) count.textContent = (i + 1) + ' / ' + shots.length;
-    };
-
-    shots.forEach(function (shot, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'pgal__thumb';
-      b.setAttribute('aria-label', 'Screenshot ' + (i + 1));
-      var img = document.createElement('img');
-      img.src = shot.src;
-      img.alt = '';
-      img.loading = 'lazy';
-      b.appendChild(img);
-      b.addEventListener('click', function () { show(i); });
-      thumbs.appendChild(b);
-    });
-
-    thumbs.hidden = false;
-    if (count) count.hidden = false;
-    show(0);
-  }
-
-  /* ── 12. Section nav scroll spy ────────────────────────────────────────── */
-  function initSpy() {
-    var nav = $('[data-spy]');
-    if (!nav) return;
-
-    var links = $$('a[href^="#"]', nav);
-    if (!links.length || !('IntersectionObserver' in window)) return;
-
-    var byId = {};
-    var targets = [];
-
-    links.forEach(function (a) {
-      var el = document.getElementById(a.getAttribute('href').slice(1));
-      if (!el) { a.remove(); return; }
-      byId[el.id] = a;
-      targets.push(el);
-    });
-
-    var mark = function (id) {
-      links.forEach(function (a) {
-        a.classList.toggle('is-active', a === byId[id]);
-      });
-    };
-
-    var io = new IntersectionObserver(function (entries) {
-      /* The topmost section currently on screen wins. */
-      var best = null;
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        if (!best || e.boundingClientRect.top < best.boundingClientRect.top) best = e;
-      });
-      if (best) mark(best.target.id);
-    }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
-
-    targets.forEach(function (t) { io.observe(t); });
-    mark(targets[0].id);
-  }
-
-  /* One failing feature must never take the rest of the page down with it. */
-  function run(fns) {
-    fns.forEach(function (fn) {
-      try {
-        fn();
-      } catch (err) {
-        if (window.console && console.warn) console.warn('[theme] ' + fn.name, err);
-      }
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
-    run([
-      mountModules,
-      initHeader,
-      initDropdowns,
-      initDrawers,
-      initPromo,
-      initPackageTimers,
-      initFaq,
-      initCarousels,
-      initCatalog,
-      initReveal,
-      initNote,
-
-      /* Motion layer — after mountModules() so Tebex's own cards get it too. */
-      initAnim,
-      initTilt,
-      initHeroFx,
-      initCountUp,
-      initRails,
-      initMagnetic,
-      initGallery,        /* before the lightbox so new thumbs get wired */
-      initSpy,
-      initLightbox,
-      initParallax,
-      initGalleries,
-      initImageLoad
-    ]);
+    [mountModules, initDropdowns, initDrawers, initPackageTimers, initFaq,
+     initCatalog, initGallery, initCountUp, initNote].forEach(function (fn) {
+      try { fn(); } catch (err) { if (window.console) console.error(err); }
+    });
   });
 })();
 </script>

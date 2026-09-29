@@ -1,0 +1,93 @@
+/* ============================================================================
+   STORE THEME — part 6: checkout, options, sign-in, CMS pages, drawers
+   Same w- prefix and black + cyan look as part 5.
+   ============================================================================ */
+
+.w-box__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.w-box__title { font-size: 14px; font-weight: 600; text-transform: none; }
+.w-box__sub { margin-top: 3px; color: var(--faint); font-size: 10.5px; }
+.w-box + .w-box { margin-top: 14px; }
+
+/* Basket */
+.w-co { display: grid; gap: 14px; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: start; }
+.w-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 10px; background: #0c0e0f; border: 1px solid var(--w-line); }
+.w-item + .w-item { margin-top: 8px; }
+.w-item__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.w-item__name { font-size: 12px; font-weight: 600; }
+a.w-item__name:hover { color: var(--accent); }
+.w-item__meta { color: var(--faint); font-size: 9.5px; }
+.w-item__price { font-size: 13px; font-weight: 700; white-space: nowrap; }
+.w-item__price small { color: var(--faint); font-size: 9px; font-weight: 500; }
+.w-x { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 7px; background: #1a1d20; color: var(--muted); font-size: 11px; transition: background var(--t-fast), color var(--t-fast); }
+.w-x:hover { background: rgba(255, 77, 77, .18); color: #ff6b6b; }
+
+.w-sum { position: sticky; top: 16px; }
+.w-sum__row { display: flex; justify-content: space-between; padding: 9px 0; color: var(--muted); font-size: 11.5px; border-bottom: 1px solid var(--w-line); }
+.w-sum__row--total { padding: 16px 0; border: 0; color: #fff; font-size: 13px; }
+.w-sum__row--total strong { color: var(--accent); font-size: 20px; }
+.w-sum__row--total small { font-size: 10px; color: var(--faint); font-weight: 500; }
+.w-sum tebex-checkout { display: block; }
+.w-sum .w-note { margin-top: 14px; line-height: 1.6; }
+
+/* Inputs */
+.w-input {
+  flex: 1; min-width: 0; width: 100%; height: 40px; padding: 0 14px;
+  border: 1px solid var(--w-line); border-radius: 8px; outline: 0;
+  background: #0c0e0f; color: #fff; font-size: 12px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.w-input::placeholder { color: var(--faint); }
+.w-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .12); }
+.w-row { display: flex; gap: 8px; align-items: stretch; }
+.w-row .w-btn { height: 40px; }
+.w-addon { display: grid; place-items: center; padding: 0 14px; border-radius: 8px; background: #1a1d20; color: var(--muted); font-size: 11px; }
+.w-select--full { width: 100%; height: 40px; padding-left: 14px; background-color: #0c0e0f; border: 1px solid var(--w-line); font-size: 12px; }
+.w-select--full:focus { border-color: var(--accent); }
+.w-field { display: block; margin-bottom: 16px; }
+.w-field__label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 10.5px; font-weight: 500; }
+
+/* Options / sign-in card */
+.w-auth { max-width: 520px; margin: 30px auto 0; }
+.w-auth .w-box { padding: 30px; }
+.w-auth__icon { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto 14px; border-radius: 12px; background: rgba(var(--accent-rgb), .12); color: var(--accent); font-size: 17px; }
+.w-auth__title { text-align: center; font-size: 19px; font-weight: 600; text-transform: none; }
+.w-auth__sub { margin: 6px 0 24px; text-align: center; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.w-auth__actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 22px; }
+.w-auth__actions input[type=submit] { cursor: pointer; border: 0; }
+.w-auth .w-note { text-align: center; margin-top: 18px; line-height: 1.6; }
+
+/* Tebex's own login form */
+.w-login-form input[type=text], .w-login-form input[type=password], .w-login-form input:not([type]) {
+  width: 100%; height: 40px; padding: 0 14px; margin-bottom: 12px;
+  border: 1px solid var(--w-line); border-radius: 8px; outline: 0;
+  background: #0c0e0f; color: #fff; font-size: 12px;
+}
+.w-login-form input:focus { border-color: var(--accent); }
+.w-login-form button, .w-login-form input[type=submit] {
+  width: 100%; height: 42px; border: 0; border-radius: 8px; cursor: pointer;
+  background: var(--accent); color: var(--on-accent); font-size: 12.5px; font-weight: 600;
+}
+.w-login-form label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10.5px; }
+
+/* Gift checkbox (gifting.html) */
+.w-giftcheck { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: #0c0e0f; border: 1px solid var(--w-line); }
+.w-giftcheck__label { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: 11.5px; }
+.w-giftcheck__label input { width: 15px; height: 15px; accent-color: var(--accent); }
+.w-giftcheck__label i { color: var(--accent); }
+
+/* Cart + mobile drawers */
+.drawer__panel { background: #0b0d0e; border-color: var(--w-line); }
+.drawer__head h3 { font-size: 14px; font-weight: 600; }
+.drawer .line { border-radius: 10px; background: #111315; border: 1px solid var(--w-line); }
+.drawer .btn--accent { background: var(--accent); color: var(--on-accent); border-radius: 8px; }
+.mnav a { border-radius: 8px; font-size: 13px; }
+.mnav a:hover { color: var(--accent); }
+
+/* Flash messages + toast */
+.note { border-radius: 10px; font-size: 12px; }
+.toast { border-radius: 10px; }
+
+@media (max-width: 900px) {
+  .w-co { grid-template-columns: 1fr; }
+  .w-sum { position: static; }
+}
