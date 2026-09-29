@@ -2,88 +2,90 @@
 
 {% block content %}
 
-<div class="shell auth">
-  <div class="auth__card">
+<div class="shell">
+  <div class="w-auth">
+    <div class="w-box">
 
-    <div class="auth__icon"><i class="fa-solid fa-sliders"></i></div>
-    <h1 class="auth__title">{{ options.package.name }}</h1>
-    <p class="auth__sub">{{ __("A few details before this package is added to your basket.") }}</p>
+      <div class="w-auth__icon"><i class="fa-solid fa-sliders"></i></div>
+      <h1 class="w-auth__title">{{ options.package.name }}</h1>
+      <p class="w-auth__sub">{{ __("A few details before this package is added to your basket.") }}</p>
 
-    <form method="post">
+      <form method="post">
 
-      {% if options.package.chooseServer %}
-        <div class="field form-group">
-          <span class="field__label">{{ __("Server") }}</span>
-          <select class="select" name="server" required>
-            <option value="">{{ __("Please choose which server to receive this package upon") }}</option>
-            {% for server in options.servers %}
-              <option value="{{ server.id }}">{{ server.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      {% endif %}
-
-      {% if options.package.customPrice %}
-        <div class="field form-group">
-          <span class="field__label">{{ __("Amount") }}</span>
-          <div class="input-group">
-            <input type="text" name="price" class="input"
-                   placeholder="{{ __("Enter an amount greater than " ~ options.package.price ~ " " ~ store.currency) }}">
-            <span class="input-group-addon">{{ store.currency }}</span>
-          </div>
-        </div>
-      {% endif %}
-
-      {% for variable in options.variables %}
-
-        {% if variable.type == "dropdown" %}
-
-          <div class="field form-group">
-            <span class="field__label">{{ variable.description }}</span>
-            <select name="variables[{{ variable.id }}]" class="select">
-              <option value="">{{ variable.description }}</option>
-              {% for option in variable.options %}
-                <option value="{{ option.id }}" {% if option.default %}selected{% endif %}>
-                  {{ option.name }}{% if option.price > 0 %} (+{{ option.price|money }} {{ basket.currency }}){% endif %}
-                </option>
+        {% if options.package.chooseServer %}
+          <div class="w-field form-group">
+            <span class="w-field__label">{{ __("Server") }}</span>
+            <select class="w-select w-select--full" name="server" required>
+              <option value="">{{ __("Please choose which server to receive this package upon") }}</option>
+              {% for server in options.servers %}
+                <option value="{{ server.id }}">{{ server.name }}</option>
               {% endfor %}
             </select>
           </div>
-
-        {% elseif variable.id == "discord_id" %}
-
-          <div class="field form-group">
-            <span class="field__label">{{ __(variable.description) }}</span>
-            <div class="joined">
-              <input type="text" class="input" readonly
-                     value="{% if variable.value %}{{ __("Logged in as ") }}{{ variable.discord_tag }}{% else %}{{ __("Not logged in") }}{% endif %}">
-              <a href="https://ident.tebex.io/discord/?return={{ url(['fivem_id']) }}" id="login-with-discord" class="btn btn--dc btn--ghost">
-                <i class="fa-brands fa-discord"></i> {{ __("Login") }}
-              </a>
-            </div>
-            <input type="hidden" name="variables[{{ variable.id }}]" value="{{ variable.value }}">
-          </div>
-
-        {% else %}
-
-          <div class="field form-group">
-            <span class="field__label">{{ variable.description }}</span>
-            <input type="text" name="variables[{{ variable.id }}]" class="input" placeholder="{{ variable.description }}">
-          </div>
-
         {% endif %}
 
-      {% endfor %}
+        {% if options.package.customPrice %}
+          <div class="w-field form-group">
+            <span class="w-field__label">{{ __("Amount") }}</span>
+            <div class="w-row">
+              <input type="text" name="price" class="w-input"
+                     placeholder="{{ __("Enter an amount greater than " ~ options.package.price ~ " " ~ store.currency) }}">
+              <span class="w-addon">{{ store.currency }}</span>
+            </div>
+          </div>
+        {% endif %}
 
-      <div class="auth__actions">
-        <a href="/category/{{ options.package.category }}" class="btn btn--ghost">
-          <i class="fa-solid fa-arrow-left"></i> {{ __("Back") }}
-        </a>
-        <input type="submit" value="{{ __("Continue") }}" name="submit" class="btn btn--accent">
-      </div>
+        {% for variable in options.variables %}
 
-    </form>
+          {% if variable.type == "dropdown" %}
 
+            <div class="w-field form-group">
+              <span class="w-field__label">{{ variable.description }}</span>
+              <select name="variables[{{ variable.id }}]" class="w-select w-select--full">
+                <option value="">{{ variable.description }}</option>
+                {% for option in variable.options %}
+                  <option value="{{ option.id }}" {% if option.default %}selected{% endif %}>
+                    {{ option.name }}{% if option.price > 0 %} (+{{ option.price|money }} {{ basket.currency }}){% endif %}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+          {% elseif variable.id == "discord_id" %}
+
+            <div class="w-field form-group">
+              <span class="w-field__label">{{ __(variable.description) }}</span>
+              <div class="w-row">
+                <input type="text" class="w-input" readonly
+                       value="{% if variable.value %}{{ __("Logged in as ") }}{{ variable.discord_tag }}{% else %}{{ __("Not logged in") }}{% endif %}">
+                <a href="https://ident.tebex.io/discord/?return={{ url(['fivem_id']) }}" id="login-with-discord" class="w-btn w-btn--dark">
+                  <i class="fa-brands fa-discord"></i> {{ __("Login") }}
+                </a>
+              </div>
+              <input type="hidden" name="variables[{{ variable.id }}]" value="{{ variable.value }}">
+            </div>
+
+          {% else %}
+
+            <div class="w-field form-group">
+              <span class="w-field__label">{{ variable.description }}</span>
+              <input type="text" name="variables[{{ variable.id }}]" class="w-input" placeholder="{{ variable.description }}">
+            </div>
+
+          {% endif %}
+
+        {% endfor %}
+
+        <div class="w-auth__actions">
+          <a href="/category/{{ options.package.category }}" class="w-btn w-btn--dark">
+            <i class="fa-solid fa-arrow-left"></i> {{ __("Back") }}
+          </a>
+          <input type="submit" value="{{ __("Continue") }}" name="submit" class="w-btn w-btn--acc">
+        </div>
+
+      </form>
+
+    </div>
   </div>
 </div>
 
