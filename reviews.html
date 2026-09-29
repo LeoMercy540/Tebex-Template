@@ -1,94 +1,30 @@
 {# ═══════════════════════════════════════════════════════════════════════
    EDIT ME — REVIEWS
-   Replace these with real quotes. "stars" is 1–5. "avatar" can be any
-   image URL; leave it as "" to fall back to the initial letter.
+   Replace these placeholders with real customer quotes. "stars" is 1–5.
+   "avatar" can be any image URL; "" falls back to the initial letter.
    ═══════════════════════════════════════════════════════════════════════ #}
 {% set REVIEWS = [
-  {
-    "name": "Alex M.",
-    "role": "Server owner",
-    "stars": 5,
-    "avatar": "",
-    "text": "Dropped it in, restarted, done. Zero conflicts with the rest of our stack and the resmon numbers are exactly what they advertised."
-  },
-  {
-    "name": "Kenji T.",
-    "role": "Lead developer",
-    "stars": 5,
-    "avatar": "",
-    "text": "The code is actually readable, which is rare. Config is sensible and I did not have to fight it to make our own changes."
-  },
-  {
-    "name": "Sofia R.",
-    "role": "Community manager",
-    "stars": 5,
-    "avatar": "",
-    "text": "Asked a question in their Discord at 2am and got a real answer from a developer within the hour. That alone was worth it."
-  },
-  {
-    "name": "Daniel W.",
-    "role": "Server owner",
-    "stars": 4,
-    "avatar": "",
-    "text": "Our players noticed the difference the same night we deployed. Updates have been steady since launch, no abandoned product here."
-  },
-  {
-    "name": "Priya S.",
-    "role": "Developer",
-    "stars": 5,
-    "avatar": "",
-    "text": "Documentation covered every exported function I needed. Integrating it with our custom inventory took under an hour."
-  },
-  {
-    "name": "Marco B.",
-    "role": "Server owner",
-    "stars": 5,
-    "avatar": "",
-    "text": "Bought three scripts so far. Consistent quality across all of them, which is why I keep coming back instead of shopping around."
-  }
+  { "name": "Customer name", "role": "Customer", "stars": 5, "avatar": "", "text": "Replace this with a real review from one of your customers." },
+  { "name": "Customer name", "role": "Customer", "stars": 5, "avatar": "", "text": "Replace this with a real review from one of your customers." },
+  { "name": "Customer name", "role": "Customer", "stars": 5, "avatar": "", "text": "Replace this with a real review from one of your customers." }
 ] %}
 
-
-<div class="revs">
-
-  <div class="revs__track">
-    {% for r in REVIEWS %}
-      <article class="rev">
-        <div class="rev__quote"><i class="fa-solid fa-quote-left"></i></div>
-
-        <p class="rev__text">{{ r.text }}</p>
-
-        <div class="rev__head">
-          {% if r.avatar %}
-            <img class="rev__avatar" src="{{ r.avatar }}" alt="{{ r.name }}" loading="lazy">
-          {% else %}
-            <span class="rev__avatar" style="display:grid;place-items:center;background:rgba(var(--accent-rgb),.12);color:var(--accent);font-family:var(--font-display);font-weight:700">
-              {{ r.name[0] }}
-            </span>
-          {% endif %}
-
-          <div>
-            <div class="rev__name">{{ r.name }}</div>
-            <div class="rev__role">{{ r.role }}</div>
-          </div>
-
-          <div class="rev__stars">
-            {% for i in [1, 2, 3, 4, 5] %}
-              {% if i <= r.stars %}<i class="fa-solid fa-star"></i>{% else %}<i class="fa-regular fa-star"></i>{% endif %}
-            {% endfor %}
-          </div>
+<div class="w-revs">
+  {% for r in REVIEWS %}
+    <article class="w-rev">
+      <div class="w-rev__head">
+        <span class="w-rev__av">
+          {% if r.avatar %}<img src="{{ r.avatar }}" alt="{{ r.name }}" loading="lazy">{% else %}{{ r.name[0] }}{% endif %}
+        </span>
+        <div>
+          <div class="w-rev__name">{{ r.name }}</div>
+          <div class="w-rev__role">{{ r.role }}</div>
         </div>
-      </article>
-    {% endfor %}
-  </div>
-
-  <div class="revs__nav">
-    <button type="button" class="iconbtn revs__btn--prev" aria-label="{{ __("Previous") }}">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-    <button type="button" class="iconbtn revs__btn--next" aria-label="{{ __("Next") }}">
-      <i class="fa-solid fa-arrow-right"></i>
-    </button>
-  </div>
-
+        <div class="w-rev__stars">
+          {% for i in [1, 2, 3, 4, 5] %}{% if i <= r.stars %}<i class="fa-solid fa-star"></i>{% else %}<i class="fa-regular fa-star"></i>{% endif %}{% endfor %}
+        </div>
+      </div>
+      <p class="w-rev__text">{{ r.text }}</p>
+    </article>
+  {% endfor %}
 </div>

@@ -1,47 +1,23 @@
-{# The .payments-module wrapper is what layout.twig's JS looks for. #}
+{# The .payments-module wrapper is what the layout's JS looks for. #}
 <div class="payments-module">
 
-  <div class="feed">
-
-    <div class="feed__head">
-      <div class="feed__icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-      <div>
-        <h3 class="feed__title">{{ module.header }}</h3>
-        <div class="feed__sub">{{ __("Recent supporters") }}</div>
-      </div>
-      <span class="feed__live">{{ __("Live") }}</span>
-    </div>
-
-    <ul class="feed__list">
-      {% for payment in module.payments %}
-        <li>
-          <div class="avatar">
-            <img src="{{ payment.skin }}" alt="{{ payment.ign }}" loading="lazy">
-          </div>
-
-          <div class="info">
-            <div class="ign">{{ payment.ign }}</div>
-            {% if module.displayPackage %}
-              <div class="ppack">{{ payment.name }}</div>
-            {% endif %}
-            {% if module.displayTime %}
-              <div class="pdate">{{ payment.time }}</div>
-            {% endif %}
-          </div>
-
+  <ul class="w-pays">
+    {% for payment in module.payments %}
+      <li class="w-pay">
+        <div class="w-pay__top">
+          <span class="w-pay__av"><img src="{{ payment.skin }}" alt="{{ payment.ign }}" loading="lazy"></span>
+          <span class="w-pay__ign">{{ payment.ign }}</span>
           {% if module.displayPrice %}
-            <div class="extra">{{ payment.price|money }} <small>{{ payment.currency }}</small></div>
+            <span class="w-pay__amt">{{ payment.price|money }}</span>
           {% endif %}
-        </li>
-      {% else %}
-        <li>
-          <div class="info">
-            <div class="ppack">{{ __("No purchases yet — be the first.") }}</div>
-          </div>
-        </li>
-      {% endfor %}
-    </ul>
-
-  </div>
+        </div>
+        {% if module.displayPackage %}
+          <div class="w-pay__pkg">{{ __("Package") }}: {{ payment.name }}</div>
+        {% endif %}
+      </li>
+    {% else %}
+      <li class="w-pay__empty">{{ __("No purchases yet — be the first.") }}</li>
+    {% endfor %}
+  </ul>
 
 </div>

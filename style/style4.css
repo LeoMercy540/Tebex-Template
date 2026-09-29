@@ -50,7 +50,7 @@
   height: 44px;
   border: 1px solid var(--border-hover);
   border-radius: 50%;
-  background: rgba(18, 18, 18, .7);
+  background: rgba(8, 9, 10, .7);
   color: var(--text);
   font-size: 16px;
   cursor: pointer;
@@ -246,7 +246,7 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(18, 18, 18, .72), rgba(18, 18, 18, .94)),
+    linear-gradient(180deg, rgba(8, 9, 10, .72), rgba(8, 9, 10, .94)),
     radial-gradient(70% 60% at 15% 0%, rgba(var(--accent-rgb), .20), transparent 65%);
 }
 

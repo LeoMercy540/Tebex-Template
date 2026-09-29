@@ -1,65 +1,23 @@
 {# ═══════════════════════════════════════════════════════════════════════
    EDIT ME — FAQ
-   Add, remove or reorder entries in FAQ_ITEMS. Add or remove links in
-   FAQ_LINKS. Nothing else in this file needs touching.
+   Add, remove or reorder entries in FAQ_ITEMS. Nothing else needs touching.
    ═══════════════════════════════════════════════════════════════════════ #}
 {% set FAQ_ITEMS = [
-  {
-    "q": "How fast is delivery?",
-    "a": "Instantly. As soon as your payment clears, the package is granted to your account automatically — there is nothing to wait for and no manual step on our side."
-  },
-  {
-    "q": "Do I get updates after buying?",
-    "a": "Yes. Every purchase includes lifetime updates. When we ship a fix or a new feature it appears in your account at no extra cost."
-  },
-  {
-    "q": "Can I gift a package to someone else?",
-    "a": "Yes. On any package page, click Gift, enter the recipient's username and complete the checkout. The package is delivered straight to them."
-  },
-  {
-    "q": "What happens if I lose access to my account?",
-    "a": "Your purchases are tied to your licence, not to a single session. Open a ticket in our Discord with your transaction ID and we will restore access."
-  },
-  {
-    "q": "Which frameworks are supported?",
-    "a": "Each product page lists the frameworks it supports. If you are unsure whether a resource fits your server, ask in our Discord before buying."
-  },
-  {
-    "q": "Do you offer refunds?",
-    "a": "Because resources are delivered digitally and instantly, all sales are final. If something does not work as described, contact support and we will fix it."
-  }
+  { "q": "What is escrow on Tebex and how does it work?",  "a": "Escrow protects the source code of a resource while still letting it run on your server. You get the working resource and its config files; protected files are encrypted." },
+  { "q": "Can I get a refund for my purchase?",            "a": "Refunds are handled by Tebex, who process all payments on our behalf. Because resources are delivered digitally and instantly, please read the refund policy before buying." },
+  { "q": "What payment methods are accepted on Tebex?",    "a": "Tebex supports cards, PayPal and many local and alternative payment methods. The options available depend on your country and are shown at checkout." },
+  { "q": "How do I access my purchased assets?",           "a": "After your payment clears, log in to the FiveM Keymaster with the same account you bought with. Your purchases appear under Assets and can be downloaded there." },
+  { "q": "Is it safe to buy and sell assets on Tebex?",    "a": "Yes. Tebex is the official marketplace partner for FiveM, handling checkout, billing and fulfilment securely so we never see your payment details." },
+  { "q": "What should I do if I have an issue with my purchase?", "a": "Open a ticket in our Discord with your transaction ID and a description of the problem, and we will help you as quickly as we can." },
+  { "q": "Can I resell or share the assets I bought?",     "a": "No. Purchases are licensed to your account and server only. Reselling, leaking or sharing assets is not permitted." },
+  { "q": "What is the refund policy for my purchase?",     "a": "Digital goods are generally non-refundable once delivered, unless the resource does not work as described. Contact support and we will make it right." }
 ] %}
 
-{% set FAQ_LINKS = [
-  { "icon": "fa-brands fa-discord", "label": "Discord",       "url": "#" },
-  { "icon": "fa-brands fa-youtube", "label": "YouTube",       "url": "#" },
-  { "icon": "fa-brands fa-x-twitter", "label": "X / Twitter", "url": "#" },
-  { "icon": "fa-solid fa-book",     "label": "Documentation", "url": "#" }
-] %}
-
-
-<div class="faq">
-
-  <aside class="faq__aside">
-    <p class="sec__sub">{{ __("Still stuck? Reach us on any of these and we will get back to you.") }}</p>
-    <div class="social">
-      {% for link in FAQ_LINKS %}
-        <a href="{{ link.url }}" target="_blank" rel="noopener">
-          <i class="{{ link.icon }}"></i> {{ link.label }}
-        </a>
-      {% endfor %}
+<div class="w-faq">
+  {% for item in FAQ_ITEMS %}
+    <div class="w-qa">
+      <button type="button" class="w-qa__q">{{ item.q }}</button>
+      <div class="w-qa__a"><div class="w-qa__in">{{ item.a }}</div></div>
     </div>
-  </aside>
-
-  <div class="faq__list">
-    {% for item in FAQ_ITEMS %}
-      <div class="qa">
-        <button type="button" class="qa__q">{{ item.q }}</button>
-        <div class="qa__a">
-          <div class="qa__inner">{{ item.a }}</div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-
+  {% endfor %}
 </div>

@@ -24,15 +24,15 @@
        Blue    #3b82f6 / 59,130,246  / on: #ffffff / dim: #2563eb
        Purple  #c25dff / 194,93,255  / on: #1b0a26 / dim: #a642e0
      ------------------------------------------------------------------------ */
-  --accent:      #c8281e;
-  --accent-rgb:  200, 40, 30;
-  --on-accent:   #ffffff;
-  --accent-dim:  #a41f17;
+  --accent:      #00e5ff;
+  --accent-rgb:  0, 229, 255;
+  --on-accent:   #001a1f;
+  --accent-dim:  #00b8d4;
 
   /* ── Surfaces ──────────────────────────────────────────────────────────── */
-  --bg:            #121212;
-  --bg-elev:       #1a1a1a;
-  --bg-elev-2:     #202020;
+  --bg:            #08090a;
+  --bg-elev:       #111315;
+  --bg-elev-2:     #181b1e;
   --border:        rgba(255, 255, 255, .08);
   --border-hover:  rgba(255, 255, 255, .16);
   --border-accent: rgba(var(--accent-rgb), .35);
@@ -52,7 +52,7 @@
   --r-md:   12px;
   --r-lg:   18px;
   --r-pill: 999px;
-  --shell:  1440px;
+  --shell:  1200px;
   --pad:    clamp(16px, 4vw, 32px);
   --gap:    20px;
 
@@ -747,7 +747,7 @@ input[readonly],
 
 .hdr.is-stuck {
   border-bottom-color: var(--border);
-  background: rgba(18, 18, 18, .82);
+  background: rgba(8, 9, 10, .82);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   backdrop-filter: blur(14px) saturate(140%);
 }
